@@ -1,0 +1,140 @@
+@model MyPortfolio.Web.Models.ViewModels.AboutEditViewModel
+
+@{
+    ViewData["Title"] = "Profilimi Düzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@if (Model != null)
+{
+    <!-- SINGLE Main Form for ALL actions -->
+    <form asp-controller="AboutAdmin" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ImageUrl" />
+        <input type="hidden" asp-for="CvDocumentUrl" />
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Genel Bilgiler</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="FirstName"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LastName"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Address"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Phone"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description"></label>
+                            <textarea asp-for="Description" rows="8" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ShortDescription"></label>
+                            <textarea asp-for="ShortDescription" rows="3" class="form-control"></textarea>
+                            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-secondary mb-3">
+                    <div class="card-header">
+                        <h3 class="card-title">Profil Resmi</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Url.Content(Model.ImageUrl)" alt="profil fotoğrafı" class="img-fluid img-thumbnail mb-3" style="max-width: 150px;" />
+                        }
+                        <label asp-for="ImageUrlFile">Resmi Değiştir</label>
+                        <input asp-for="ImageUrlFile" class="form-control-file" />
+                        <span asp-validation-for="ImageUrlFile" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="card card-secondary mb-3">
+                    <div class="card-header">
+                        <h3 class="card-title">CV Belgesi</h3>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(Model.CvDocumentUrl))
+                        {
+                            <a href="@Url.Content(Model.CvDocumentUrl)" target="_blank" class="btn btn-info btn-block mb-3">Mevcut CV'yi Görüntüle</a>
+                        }
+                        else
+                        {
+                            <span class="d-block text-center mb-3">Henüz bir CV yüklenmemiş.</span>
+                        }
+                        <label asp-for="CvDocumentUrlFile">CV'yi Değiştir (.pdf)</label>
+                        <input asp-for="CvDocumentUrlFile" class="form-control-file" accept=".pdf" />
+                        <span asp-validation-for="CvDocumentUrlFile" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Password Change Card - INSIDE the main form -->
+                <div class="card card-secondary mb-3">
+                    <div class="card-header">
+                        <h3 class="card-title">Şifre Değiştir</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="PasswordChange.OldPassword"></label>
+                            <input asp-for="PasswordChange.OldPassword" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="PasswordChange.OldPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PasswordChange.NewPassword"></label>
+                            <input asp-for="PasswordChange.NewPassword" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="PasswordChange.NewPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PasswordChange.ConfirmPassword"></label>
+                            <input asp-for="PasswordChange.ConfirmPassword" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="PasswordChange.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-block mt-2" asp-action="ChangePassword" asp-controller="AboutAdmin">Şifreyi Değiştir</button>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <button type="submit" class="btn btn-success btn-block">Bilgileri Kaydet</button>
+
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <p>Görüntülenecek bir "Hakkında" kaydı bulunamadı.</p>
+}

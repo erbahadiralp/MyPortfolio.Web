@@ -1,0 +1,51 @@
+@model IEnumerable<MyPortfolio.Web.Models.Entities.Project>
+
+@{
+    ViewData["Title"] = "Proje Listesi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Proje Listesi</h2>
+<br />
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Proje Adı</th>
+                    <th>Proje Açıklaması</th>
+                    <th>Proje Görseli</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="~/static/@item.ImageUrl" alt="@item.Title" style="max-width: 100px; height: auto;" />
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Düzenle</a> |
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Bu projeyi silmek istediğinizden emin misiniz?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<br />
+
+<a asp-action="Create" class="btn btn-primary">Yeni Proje Bilgisi Ekle</a>

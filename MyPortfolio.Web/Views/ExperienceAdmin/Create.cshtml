@@ -1,0 +1,102 @@
+@model MyPortfolio.Web.Models.ViewModels.ExperienceViewModel
+
+@{
+    ViewData["Title"] = "Yeni Deneyim Ekle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<h4>Yeni Deneyim Ekleme Sayfası</h4>
+<hr />
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Company" class="control-label"></label>
+            <input asp-for="Company" class="form-control" />
+            <span asp-validation-for="Company" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label asp-for="Location" class="control-label"></label>
+            <input asp-for="Location" class="form-control" />
+            <span asp-validation-for="Location" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="DateRange" class="control-label"></label>
+            <input asp-for="DateRange" class="form-control" />
+            <span asp-validation-for="DateRange" class="text-danger"></span>
+        </div>
+    </div>
+
+    <hr />
+
+    <h5>Sorumluluklar</h5>
+    <div id="responsibilities-container">
+        @for (int i = 0; i < Model.Responsibilities.Count; i++)
+        {
+            <div class="form-group responsibility-item">
+                <div class="input-group">
+                    <input asp-for="Responsibilities[i].Description" class="form-control" placeholder="Sorumluluk açıklaması..." />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-danger remove-responsibility">Sil</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <button type="button" id="add-responsibility" class="btn btn-sm btn-success mt-2">Sorumluluk Ekle</button>
+
+    <hr />
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Kaydet" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Listeye Geri Dön</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let respContainer = $('#responsibilities-container');
+
+            function reindex() {
+                respContainer.find('.responsibility-item').each(function(index, item) {
+                    $(item).find('input[name^="Responsibilities"]').each(function() {
+                        $(this).attr('name', $(this).attr('name').replace(/\[\d+\]/, '[' + index + ']'));
+                    });
+                });
+            }
+
+            // Add new responsibility input
+            $('#add-responsibility').on('click', function () {
+                let newIndex = respContainer.find('.responsibility-item').length;
+                let newItem = `
+                    <div class="form-group responsibility-item">
+                        <div class="input-group">
+                             <input type="text" name="Responsibilities[${newIndex}].Description" class="form-control" placeholder="Sorumluluk açıklaması..." />
+                             <div class="input-group-append">
+                                <button type="button" class="btn btn-danger remove-responsibility">Sil</button>
+                            </div>
+                        </div>
+                    </div>`;
+                respContainer.append(newItem);
+            });
+
+            // Remove responsibility input
+            respContainer.on('click', '.remove-responsibility', function () {
+                $(this).closest('.responsibility-item').remove();
+                reindex();
+            });
+        });
+    </script>
+}

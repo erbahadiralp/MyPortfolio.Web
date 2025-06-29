@@ -1,0 +1,120 @@
+﻿@model MyPortfolio.Web.Models.ViewModels.HomePageViewModel
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-content">
+            <div class="nav-items">
+                <a href="#ana-sayfa" class="site-title">Bahadır Alp Er</a>
+                <div class="nav-links">
+                    <a href="#ana-sayfa" class="nav-link">Home</a>
+                    <a href="#egitim" class="nav-link">Education</a>
+                    <a href="#deneyim" class="nav-link">Experience</a>
+                    <a href="#projeler" class="nav-link">Projects</a>
+                    <a href="#yetenekler" class="nav-link">Skills</a>
+                    <a href="#iletisim" class="nav-link">Contact</a>
+                    <button class="theme-toggle" id="theme-toggle-button">
+                        <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="main-container">
+    <div class="content-wrapper">
+        <div class="sidebar">
+            <div class="sidebar-content">
+                @foreach (var x in Model.Abouts.Take(1))
+                {
+                    <div class="profile-image">
+                        <img src="@Url.Content("~" + x.ImageUrl)" alt="Profil Fotoğrafı" class="avatar-img">
+                    </div>
+                    <div class="profile-info">
+                        <h2 class="profile-name">@x.FirstName @x.LastName</h2>
+                        <p class="profile-bio">@x.ShortDescription</p>
+                    </div>
+                    <div class="social-links">
+                        <div class="social-link">
+                            <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>@x.Address</span>
+                        </div>
+
+                        <a href="mailto:@x.Email" class="social-link" target="_blank">
+                            <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span>@x.Email</span>
+                        </a>
+
+                        <a href="https://github.com/erbahadiralp" class="social-link" target="_blank">
+                            <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/bahadiralper/" class="social-link" target="_blank">
+                            <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                            <span>LinkedIn</span>
+                        </a>
+                    </div>
+                    <div class="download-cv">
+                        <a href="@Url.Content("~" + x.CvDocumentUrl)" download class="download-button">
+                            <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>Download CV</span>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="sections">
+                @foreach (var x in Model.Abouts)
+                {
+                    <section id="ana-sayfa" class="section">
+                        <h1 class="welcome-title">Welcome</h1>
+                        <p class="content-paragraph">
+                            @x.Description
+                        </p>
+                    </section>
+                }
+                <section id="egitim" class="section">
+                    <partial name="Education" for="Educations" />
+                </section>
+                <section id="deneyim" class="section">
+                    <partial name="Experience" for="Experiences" />
+                </section>
+                <section id="projeler" class="section">
+                    <partial name="Projects" for="Projects" />
+                </section>
+                <section id="yetenekler" class="section">
+                    <partial name="Skill" for="Skills" />
+                </section>
+                <section id="iletisim" class="section">
+                    <partial name="Contact" model="Model.ContactMessage" view-data='new ViewDataDictionary(ViewData) { { "AboutInfo", Model.Abouts.FirstOrDefault() } }' />
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

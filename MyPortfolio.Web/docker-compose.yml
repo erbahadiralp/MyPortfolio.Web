@@ -1,0 +1,35 @@
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    command: dotnet watch run --project ./MyPortfolio.Web.csproj --urls "http://*:8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/src
+      - /src/bin
+      - /src/obj
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_HOST=db
+      - DB_NAME=MyPortfolioDb
+      - DB_USER=sa
+      - DB_PASSWORD=Your_Password123!
+      - ConnectionStrings__DefaultConnection=Server=db;Database=MyPortfolioDb;User Id=sa;Password=Your_Password123!;MultipleActiveResultSets=true;TrustServerCertificate=True
+
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_Password123!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data: 

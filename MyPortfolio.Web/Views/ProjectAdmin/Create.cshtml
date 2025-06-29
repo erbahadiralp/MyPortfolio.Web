@@ -1,0 +1,50 @@
+@model MyPortfolio.Web.Models.ViewModels.ProjectViewModel
+
+@{
+    ViewData["Title"] = "Yeni Proje Ekle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<h4>Yeni Proje Ekleme Sayfası</h4>
+<hr />
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Link" class="control-label"></label>
+        <input asp-for="Link" class="form-control" />
+        <span asp-validation-for="Link" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Tools" class="control-label"></label>
+        <input asp-for="Tools" class="form-control" />
+        <span asp-validation-for="Tools" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageFile" class="control-label"></label>
+        <input asp-for="ImageFile" class="form-control-file" type="file" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Kaydet" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Listeye Geri Dön</a>
+    </div>
+</form>

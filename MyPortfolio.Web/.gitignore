@@ -1,0 +1,23 @@
+# Environment files
+production.env 
+
+# Gizli/Ortama özel dosyalar
+# #######################
+appsettings.json
+appsettings.Development.json
+
+# Yüklenen statik dosyalar (CV, profil resmi vb.)
+# ################################################
+/wwwroot/static/*
+
+# Visual Studio & .NET Core
+# #######################
+/bin
+/obj
+.vs/
+*.user
+*.suo
+
+# Log dosyaları
+# ###########
+*.log 

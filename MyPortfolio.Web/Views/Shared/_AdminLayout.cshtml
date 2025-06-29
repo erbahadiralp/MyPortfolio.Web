@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-g">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>Admin Panel - @ViewData["Title"]</title>
+    <!-- Simple bar CSS -->
+    <link rel="stylesheet" href="~/Templates/dark/css/simplebar.css">
+    <!-- Fonts CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="~/Templates/dark/css/feather.css">
+    <!-- Date Range Picker CSS -->
+    <link rel="stylesheet" href="~/Templates/dark/css/daterangepicker.css">
+    <!-- App CSS -->
+    <link rel="stylesheet" href="~/Templates/dark/css/app-light.css" id="lightTheme" disabled>
+    <link rel="stylesheet" href="~/Templates/dark/css/app-dark.css" id="darkTheme">
+</head>
+
+<body class="vertical  dark  ">
+    <div class="wrapper">
+
+        <aside class="sidebar-left border-right bg-white shadow" id="leftSidebar" data-simplebar>
+            <a href="#" class="btn collapseSidebar toggle-btn d-lg-none text-muted ml-2 mt-3" data-toggle="toggle">
+                <i class="fe fe-x"><span class="sr-only"></span></i>
+            </a>
+            <nav class="vertnav navbar navbar-light">
+                <!-- nav bar -->
+                <div class="w-100 mb-4 d-flex">
+                    <a class="navbar-brand mx-auto mt-2 flex-fill text-center" asp-controller="AboutAdmin" asp-action="Index">
+                        <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
+                
+                        <g>
+                        <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
+                        <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
+                        <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
+                </g>
+                        <br>
+                        <br>
+                        <h4>ADMIN PANEL</h4>
+              </svg>
+                    </a>
+                </div>
+
+                <ul class="navbar-nav flex-fill w-100 mb-2">
+
+                    <li class="nav-item">
+                        <a asp-controller="AboutAdmin" asp-action="Index" class="nav-link">
+                            <i class="fe fe-user fe-16"></i>
+                            <span class="ml-3 item-text">Hakkımda</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-controller="EducationAdmin" asp-action="Index" class="nav-link">
+                            <i class="fe fe-book fe-16"></i>
+                            <span class="ml-3 item-text">Eğitimlerim</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-controller="ExperienceAdmin" asp-action="Index" class="nav-link">
+                            <i class="fe fe-briefcase fe-16"></i>
+                            <span class="ml-3 item-text">Deneyimlerim</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-controller="SkillAdmin" asp-action="Index" class="nav-link">
+                            <i class="fe fe-award fe-16"></i>
+                            <span class="ml-3 item-text">Yeteneklerim</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-controller="ProjectAdmin" asp-action="Index" class="nav-link">
+                            <i class="fe fe-code fe-16"></i>
+                            <span class="ml-3 item-text">Projelerim</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        </aside>
+
+        <main role="main" class="main-content">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg custom-navbar">
+                <div class="container-fluid">
+                    <button class="btn btn-outline-light d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fe fe-menu"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="ContactAdmin" asp-action="Index">
+                                    <i class="fe fe-message-square"></i> Mesajlar
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Index" target="_blank">
+                                    <i class="fe fe-home"></i>Siteye Git
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                @await Component.InvokeAsync("CvDownloadLink")
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="form-inline">
+                                    <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+                                        <i class="fe fe-log-out"></i>Çıkış Yap
+                                    </a>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <br />
+            <!-- Main Content -->
+            <div class="container-fluid mt-3">
+                @RenderBody()
+            </div>
+        </main>
+
+    </div> <!-- .wrapper -->
+
+    <script src="~/Templates/dark/js/jquery.min.js"></script>
+    <script src="~/Templates/dark/js/popper.min.js"></script>
+    <script src="~/Templates/dark/js/moment.min.js"></script>
+    <script src="~/Templates/dark/js/bootstrap.min.js"></script>
+    <script src="~/Templates/dark/js/simplebar.min.js"></script>
+    <script src='~/Templates/dark/js/daterangepicker.js'></script>
+    <script src='~/Templates/dark/js/jquery.stickOnScroll.js'></script>
+    <script src="~/Templates/dark/js/tinycolor-min.js"></script>
+    <script src="~/Templates/dark/js/config.js"></script>
+    <script src="~/Templates/dark/js/apps.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56159088-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'UA-56159088-1');
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+<style>
+    .custom-navbar {
+        background-color: #343a40; /* Slightly different from sidebar color */
+        color: white;
+        border-radius: 8px; /* Rounded edges */
+    }
+
+        .custom-navbar a {
+            color: white;
+        }
+
+            .custom-navbar a:hover {
+                color: #cfe8f6;
+            }
+
+        .custom-navbar .nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+</style>

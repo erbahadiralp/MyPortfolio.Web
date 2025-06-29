@@ -1,0 +1,14 @@
+@model MyPortfolio.Web.Models.Entities.About
+
+@if (Model != null && !string.IsNullOrEmpty(Model.CvDocumentUrl))
+{
+    <a class="nav-link" href="@Model.CvDocumentUrl" target="_blank">
+        <i class="fe fe-download"></i> CV'mi Indir
+    </a>
+}
+else
+{
+    <a class="nav-link text-muted disabled" href="#" style="pointer-events: none; cursor: default;">
+        <i class="fe fe-download"></i> CV Yok
+    </a>
+} 

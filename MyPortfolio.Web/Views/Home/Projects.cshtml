@@ -1,0 +1,42 @@
+﻿@model List<MyPortfolio.Web.Models.Entities.Project>
+
+<h2 class="section-title">Projects</h2>
+<div class="projects-grid">
+    @foreach (var x in Model)
+    {
+        <div class="project-card">
+            @if (!string.IsNullOrEmpty(x.ImageUrl))
+            {
+                <div class="project-image-container">
+                    <img src="~/static/@x.ImageUrl" alt="@x.Title" class="project-image" />
+                </div>
+            }
+            <div class="project-header">
+                <h3 class="project-title">@x.Title</h3>
+                <a href="@x.Link" target="_blank" class="project-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15,3 21,3 21,9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                </a>
+            </div>
+            <p class="project-description">
+                @x.Description
+            </p>
+            <div class="project-tags">
+                @if (!string.IsNullOrEmpty(x.Tools))
+                {
+                    @foreach (var tool in x.Tools.Split(','))
+                {
+                        <span class="project-tag">@tool.Trim()</span>
+                    }
+                }
+            </div>
+            <div class="project-links">
+                <a href="#" class="project-link">Demo</a>
+                <a href="@x.Link" class="project-link secondary">GitHub</a>
+            </div>
+        </div>
+    }
+</div>

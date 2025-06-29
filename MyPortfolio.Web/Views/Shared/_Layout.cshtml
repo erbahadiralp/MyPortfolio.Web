@@ -1,0 +1,15 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Bahadır Alp Er</title>
+    <link rel="stylesheet" href="~/Templates/personal-website-complete/styles.css">
+</head>
+<body>
+    @RenderBody()
+
+    <script src="~/Templates/personal-website-complete/script.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

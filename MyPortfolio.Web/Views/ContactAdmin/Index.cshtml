@@ -1,0 +1,47 @@
+@model List<MyPortfolio.Web.Models.Entities.ContactMessage>
+
+@{
+    ViewData["Title"] = "Gelen Mesajlar";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-12">
+    <div class="card shadow">
+        <div class="card-header">
+            <strong class="card-title">Gelen Mesajlar</strong>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model.OrderByDescending(x => x.SentDate))
+                {
+                    <div class="list-group-item mb-3 border rounded">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <strong class="text-primary">@item.FullName</strong>
+                                <a href="mailto:@item.Email" class="text-muted small mx-2">(@item.Email)</a>
+                            </div>
+                            <div class="time text-muted">
+                                <i class="fe fe-clock"></i>
+                                @item.SentDate?.ToString("dd MMM yyyy, HH:mm")
+                            </div>
+                        </div>
+                        <div>
+                            @if (!string.IsNullOrEmpty(item.Subject))
+                            {
+                                 <p class="mb-1"><strong>Konu:</strong> @item.Subject</p>
+                            }
+                            <div class="card bg-light p-2">
+                                <p class="mb-0">@item.Message</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">Görüntülenecek mesaj bulunmuyor.</p>
+            }
+        </div>
+    </div>
+</div> 
