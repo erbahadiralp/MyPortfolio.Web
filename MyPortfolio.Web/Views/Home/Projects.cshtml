@@ -1,19 +1,21 @@
-﻿@model List<MyPortfolio.Web.Models.Entities.Project>
+﻿@model IEnumerable<MyPortfolio.Web.Models.Entities.Project>
+@using Microsoft.Extensions.Localization
+@using MyPortfolio.Web
+@inject IStringLocalizer<SharedResource> Localizer
 
-<h2 class="section-title">Projects</h2>
 <div class="projects-grid">
-    @foreach (var x in Model)
+    @foreach (var project in Model)
     {
         <div class="project-card">
-            @if (!string.IsNullOrEmpty(x.ImageUrl))
+            @if (!string.IsNullOrEmpty(project.ImageUrl))
             {
                 <div class="project-image-container">
-                    <img src="~/static/@x.ImageUrl" alt="@x.Title" class="project-image" />
+                    <img src="~/static/@project.ImageUrl" alt="@project.Title" class="project-image" />
                 </div>
             }
             <div class="project-header">
-                <h3 class="project-title">@x.Title</h3>
-                <a href="@x.Link" target="_blank" class="project-link">
+                <h3 class="project-title">@project.Title</h3>
+                <a href="@project.Link" target="_blank" class="project-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                     <polyline points="15,3 21,3 21,9"></polyline>
@@ -22,20 +24,20 @@
                 </a>
             </div>
             <p class="project-description">
-                @x.Description
+                @project.Description
             </p>
             <div class="project-tags">
-                @if (!string.IsNullOrEmpty(x.Tools))
+                @if (!string.IsNullOrEmpty(project.Tools))
                 {
-                    @foreach (var tool in x.Tools.Split(','))
+                    @foreach (var tool in project.Tools.Split(','))
                 {
                         <span class="project-tag">@tool.Trim()</span>
                     }
                 }
             </div>
             <div class="project-links">
-                <a href="#" class="project-link">Demo</a>
-                <a href="@x.Link" class="project-link secondary">GitHub</a>
+                <a href="#" class="project-link">@Localizer["Demo"]</a>
+                <a href="@project.Link" class="project-link secondary">@Localizer["GitHub"]</a>
             </div>
         </div>
     }

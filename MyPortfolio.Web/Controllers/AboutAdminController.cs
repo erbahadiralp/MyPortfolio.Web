@@ -43,8 +43,10 @@ namespace MyPortfolio.Web.Controllers
                 Id = about.Id,
                 FirstName = about.FirstName,
                 LastName = about.LastName,
-                Description = about.Description,
-                ShortDescription = about.ShortDescription,
+                Description_tr = about.Description_tr,
+                Description_en = about.Description_en,
+                ShortDescription_tr = about.ShortDescription_tr,
+                ShortDescription_en = about.ShortDescription_en,
                 Address = about.Address,
                 Phone = about.Phone,
                 Email = about.Email,
@@ -96,8 +98,10 @@ namespace MyPortfolio.Web.Controllers
                 viewModel.Id = about.Id;
                 viewModel.FirstName = about.FirstName;
                 viewModel.LastName = about.LastName;
-                viewModel.Description = about.Description;
-                viewModel.ShortDescription = about.ShortDescription;
+                viewModel.Description_tr = about.Description_tr;
+                viewModel.Description_en = about.Description_en;
+                viewModel.ShortDescription_tr = about.ShortDescription_tr;
+                viewModel.ShortDescription_en = about.ShortDescription_en;
                 viewModel.Address = about.Address;
                 viewModel.Phone = about.Phone;
                 viewModel.Email = about.Email;
@@ -145,8 +149,10 @@ namespace MyPortfolio.Web.Controllers
             // Map ViewModel properties to the entity
             aboutEntity.FirstName = viewModel.FirstName;
             aboutEntity.LastName = viewModel.LastName;
-            aboutEntity.Description = viewModel.Description;
-            aboutEntity.ShortDescription = viewModel.ShortDescription;
+            aboutEntity.Description_tr = viewModel.Description_tr;
+            aboutEntity.Description_en = viewModel.Description_en;
+            aboutEntity.ShortDescription_tr = viewModel.ShortDescription_tr;
+            aboutEntity.ShortDescription_en = viewModel.ShortDescription_en;
             aboutEntity.Address = viewModel.Address;
             aboutEntity.Phone = viewModel.Phone;
             aboutEntity.Email = viewModel.Email;

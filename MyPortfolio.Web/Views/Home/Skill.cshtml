@@ -1,8 +1,13 @@
-﻿@model List<MyPortfolio.Web.Models.Entities.Skill>
+﻿@model IEnumerable<MyPortfolio.Web.Models.Entities.Skill>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
-<h2 class="section-title">Skills</h2>
+@{
+    var groupedSkills = Model.GroupBy(s => s.Category);
+}
+
 <div class="skills-grid">
-    @foreach (var group in Model.GroupBy(y => y.Category))
+    @foreach (var group in groupedSkills)
     {
         <div class="skill-item">
             <div class="skill-icon">
@@ -36,13 +41,15 @@
                     }
                 </svg>
             </div>
-            <h3 class="skill-title">@group.Key</h3>
-            <ul class="skill-list">
-                @foreach (var item in group)
-                {
-                    <li>@item.Name</li>
-                }
-            </ul>
+            <div class="skill-content">
+                <h4 class="skill-title">@group.Key</h4>
+                <ul class="skill-list">
+                    @foreach (var skill in group)
+                    {
+                        <li>@skill.Name</li>
+                    }
+                </ul>
+            </div>
         </div>
     }
 </div>

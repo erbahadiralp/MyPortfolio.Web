@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Yeni Yetenek Ekle";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var categories = (SelectList)ViewBag.Kategoriler;
 }
 
 <br />
@@ -12,21 +13,52 @@
 <form asp-action="Create" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="Name" class="control-label">Yetenek Adı</label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label asp-for="Name_tr" class="control-label">Yetenek Adı (TR)</label>
+        <input asp-for="Name_tr" class="form-control" />
+        <span asp-validation-for="Name_tr" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Category" class="control-label">Kategori</label>
-        <select asp-for="Category" class="form-control" asp-items="ViewBag.Kategoriler">
+        <label asp-for="Name_en" class="control-label">Yetenek Adı (EN)</label>
+        <input asp-for="Name_en" class="form-control" />
+        <span asp-validation-for="Name_en" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="CategorySelector" class="control-label">Kategori</label>
+        <select id="CategorySelector" class="form-control" asp-items="categories">
             <option value="">Kategori Seçin</option>
         </select>
-        <span asp-validation-for="Category" class="text-danger"></span>
+        <span asp-validation-for="Category_tr" class="text-danger"></span>
     </div>
+    
+    <input type="hidden" asp-for="Category_tr" />
+    <input type="hidden" asp-for="Category_en" />
+
     <br />
     <div class="form-group">
         <input type="submit" value="Kaydet" class="btn btn-primary" />
         <a asp-action="Index" class="btn btn-secondary">Listeye Geri Dön</a>
     </div>
 </form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            var categoriesData = @Html.Raw(Json.Serialize(categories.Select(c => new { Value = c.Value, Text = c.Text })));
+
+            $('#CategorySelector').change(function() {
+                var selectedValue = $(this).val();
+                var selectedCategory = categoriesData.find(c => c.value === selectedValue);
+                
+                if (selectedCategory) {
+                    var parts = selectedCategory.text.split(' / ');
+                    $('#Category_tr').val(parts[0]);
+                    $('#Category_en').val(parts[1]);
+                } else {
+                    $('#Category_tr').val('');
+                    $('#Category_en').val('');
+                }
+            });
+        });
+    </script>
+}
  

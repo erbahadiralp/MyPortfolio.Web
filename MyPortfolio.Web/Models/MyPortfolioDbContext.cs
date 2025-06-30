@@ -33,6 +33,9 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
         {
             entity.ToTable("Abouts");
 
+            entity.Ignore(e => e.Description);
+            entity.Ignore(e => e.ShortDescription);
+
             entity.Property(e => e.Address).HasMaxLength(250);
             entity.Property(e => e.CvDocumentUrl).HasColumnName("CvDocumentURL");
             entity.Property(e => e.Email).HasMaxLength(100);
@@ -40,7 +43,6 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
             entity.Property(e => e.ImageUrl).HasColumnName("ImageURL");
             entity.Property(e => e.LastName).HasMaxLength(50);
             entity.Property(e => e.Phone).HasMaxLength(20);
-            entity.Property(e => e.ShortDescription).HasMaxLength(500);
         });
 
         modelBuilder.Entity<ContactMessage>(entity =>
@@ -57,24 +59,27 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
         {
             entity.ToTable("Educations");
 
-            entity.Property(e => e.DateRange).HasMaxLength(50);
-            entity.Property(e => e.Department).HasMaxLength(100);
-            entity.Property(e => e.School).HasMaxLength(100);
+            entity.Ignore(e => e.School);
+            entity.Ignore(e => e.Department);
+            entity.Ignore(e => e.Description);
+            entity.Ignore(e => e.DateRange);
         });
 
         modelBuilder.Entity<Experience>(entity =>
         {
             entity.ToTable("Experiences");
-
-            entity.Property(e => e.Company).HasMaxLength(100);
-            entity.Property(e => e.DateRange).HasMaxLength(50);
-            entity.Property(e => e.Location).HasMaxLength(100);
-            entity.Property(e => e.Title).HasMaxLength(100);
+            
+            entity.Ignore(e => e.Title);
+            entity.Ignore(e => e.Company);
+            entity.Ignore(e => e.Location);
+            entity.Ignore(e => e.DateRange);
         });
 
         modelBuilder.Entity<ExperienceResponsibility>(entity =>
         {
             entity.ToTable("ExperienceResponsibilities");
+
+            entity.Ignore(e => e.Description);
 
             entity.HasOne(d => d.Experience).WithMany(p => p.ExperienceResponsibilities)
                 .HasForeignKey(d => d.ExperienceId)
@@ -86,16 +91,18 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
         {
             entity.ToTable("Projects");
 
+            entity.Ignore(e => e.Title);
+            entity.Ignore(e => e.Description);
+
             entity.Property(e => e.ImageUrl).HasColumnName("ImageURL");
-            entity.Property(e => e.Title).HasMaxLength(150);
         });
 
         modelBuilder.Entity<Skill>(entity =>
         {
             entity.ToTable("Skills");
 
-            entity.Property(e => e.Category).HasMaxLength(50);
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Ignore(e => e.Name);
+            entity.Ignore(e => e.Category);
         });
 
         OnModelCreatingPartial(modelBuilder);

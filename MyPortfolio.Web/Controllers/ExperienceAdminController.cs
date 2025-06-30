@@ -44,19 +44,22 @@ namespace MyPortfolio.Web.Controllers
             {
                 var experience = new Experience
                 {
-                    Title = viewModel.Title,
-                    Company = viewModel.Company,
-                    Location = viewModel.Location,
-                    DateRange = viewModel.DateRange
+                    Title_tr = viewModel.Title_tr,
+                    Title_en = viewModel.Title_en,
+                    Company_tr = viewModel.Company_tr,
+                    Company_en = viewModel.Company_en,
+                    Location_tr = viewModel.Location_tr,
+                    Location_en = viewModel.Location_en,
+                    DateRange_tr = viewModel.DateRange_tr,
+                    DateRange_en = viewModel.DateRange_en,
+                    ExperienceResponsibilities = viewModel.Responsibilities.Select(r => new ExperienceResponsibility
+                    {
+                        Description_tr = r.Description_tr,
+                        Description_en = r.Description_en
+                    }).ToList()
                 };
 
-                // Filter out empty responsibilities and add valid ones
-                viewModel.Responsibilities?
-                    .Where(r => !string.IsNullOrWhiteSpace(r.Description))
-                    .ToList()
-                    .ForEach(r => experience.ExperienceResponsibilities.Add(new ExperienceResponsibility { Description = r.Description }));
-                
-                _context.Add(experience);
+                _context.Experiences.Add(experience);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -83,11 +86,20 @@ namespace MyPortfolio.Web.Controllers
             var viewModel = new ExperienceViewModel
             {
                 Id = experience.Id,
-                Title = experience.Title,
-                Company = experience.Company,
-                Location = experience.Location,
-                DateRange = experience.DateRange,
-                Responsibilities = experience.ExperienceResponsibilities.ToList()
+                Title_tr = experience.Title_tr,
+                Title_en = experience.Title_en,
+                Company_tr = experience.Company_tr,
+                Company_en = experience.Company_en,
+                Location_tr = experience.Location_tr,
+                Location_en = experience.Location_en,
+                DateRange_tr = experience.DateRange_tr,
+                DateRange_en = experience.DateRange_en,
+                Responsibilities = experience.ExperienceResponsibilities.Select(r => new ExperienceResponsibilityViewModel
+                {
+                    Id = r.Id,
+                    Description_tr = r.Description_tr,
+                    Description_en = r.Description_en
+                }).ToList()
             };
 
             return View(viewModel);
@@ -105,43 +117,52 @@ namespace MyPortfolio.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var experienceToUpdate = await _context.Experiences
-                    .Include(e => e.ExperienceResponsibilities)
-                    .FirstOrDefaultAsync(e => e.Id == id);
-
-                if (experienceToUpdate == null)
+                try
                 {
-                    return NotFound();
+                    var experience = await _context.Experiences
+                        .Include(e => e.ExperienceResponsibilities)
+                        .FirstOrDefaultAsync(e => e.Id == id);
+
+                    if (experience == null)
+                    {
+                        return NotFound();
+                    }
+
+                    experience.Title_tr = viewModel.Title_tr;
+                    experience.Title_en = viewModel.Title_en;
+                    experience.Company_tr = viewModel.Company_tr;
+                    experience.Company_en = viewModel.Company_en;
+                    experience.Location_tr = viewModel.Location_tr;
+                    experience.Location_en = viewModel.Location_en;
+                    experience.DateRange_tr = viewModel.DateRange_tr;
+                    experience.DateRange_en = viewModel.DateRange_en;
+
+                    // Update responsibilities
+                    // Simple approach: remove all and add new ones
+                    experience.ExperienceResponsibilities.Clear();
+                    foreach (var respViewModel in viewModel.Responsibilities)
+                    {
+                        experience.ExperienceResponsibilities.Add(new ExperienceResponsibility
+                        {
+                            Description_tr = respViewModel.Description_tr,
+                            Description_en = respViewModel.Description_en
+                        });
+                    }
+
+                    _context.Update(experience);
+                    await _context.SaveChangesAsync();
                 }
-
-                experienceToUpdate.Title = viewModel.Title;
-                experienceToUpdate.Company = viewModel.Company;
-                experienceToUpdate.Location = viewModel.Location;
-                experienceToUpdate.DateRange = viewModel.DateRange;
-
-                // Update, Add, and Delete Responsibilities
-                var submittedResponsibilities = viewModel.Responsibilities?.Where(r => !string.IsNullOrWhiteSpace(r.Description)).ToList() ?? new();
-                
-                // Delete responsibilities that are no longer in the submitted list
-                var responsibilitiesToDelete = experienceToUpdate.ExperienceResponsibilities
-                    .Where(rDb => !submittedResponsibilities.Any(rVm => rVm.Id == rDb.Id)).ToList();
-                _context.ExperienceResponsibilities.RemoveRange(responsibilitiesToDelete);
-
-                // Update existing or Add new responsibilities
-                foreach (var respVm in submittedResponsibilities)
+                catch (DbUpdateConcurrencyException)
                 {
-                    var respDb = experienceToUpdate.ExperienceResponsibilities.FirstOrDefault(r => r.Id == respVm.Id);
-                    if (respDb != null) // It's an existing one, update it
+                    if (!ExperienceExists(viewModel.Id))
                     {
-                        respDb.Description = respVm.Description;
+                        return NotFound();
                     }
-                    else // It's a new one, add it
+                    else
                     {
-                        experienceToUpdate.ExperienceResponsibilities.Add(new ExperienceResponsibility { Description = respVm.Description });
+                        throw;
                     }
                 }
-                
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(viewModel);
@@ -174,6 +195,11 @@ namespace MyPortfolio.Web.Controllers
             _context.Experiences.Remove(experience);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool ExperienceExists(int id)
+        {
+            return _context.Experiences.Any(e => e.Id == id);
         }
     }
 } 

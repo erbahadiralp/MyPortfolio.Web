@@ -51,8 +51,10 @@ namespace MyPortfolio.Web.Controllers
 
                 var project = new Project
                 {
-                    Title = viewModel.Title,
-                    Description = viewModel.Description,
+                    Title_tr = viewModel.Title_tr,
+                    Title_en = viewModel.Title_en,
+                    Description_tr = viewModel.Description_tr,
+                    Description_en = viewModel.Description_en,
                     Link = viewModel.Link,
                     Tools = viewModel.Tools,
                     ImageUrl = newFileName
@@ -76,8 +78,10 @@ namespace MyPortfolio.Web.Controllers
             var viewModel = new ProjectViewModel
             {
                 Id = project.Id,
-                Title = project.Title,
-                Description = project.Description,
+                Title_tr = project.Title_tr,
+                Title_en = project.Title_en,
+                Description_tr = project.Description_tr,
+                Description_en = project.Description_en,
                 Link = project.Link,
                 Tools = project.Tools,
                 ExistingImageUrl = project.ImageUrl
@@ -107,15 +111,15 @@ namespace MyPortfolio.Web.Controllers
                 return View(viewModel);
             }
             
-            var projectToUpdate = new Project
-            {
-                Id = viewModel.Id,
-                Title = viewModel.Title,
-                Description = viewModel.Description,
-                Link = viewModel.Link,
-                Tools = viewModel.Tools,
-                ImageUrl = viewModel.ExistingImageUrl // Start with the existing image URL
-            };
+            var projectToUpdate = await _context.Projects.FindAsync(id);
+            if (projectToUpdate == null) return NotFound();
+
+            projectToUpdate.Title_tr = viewModel.Title_tr;
+            projectToUpdate.Title_en = viewModel.Title_en;
+            projectToUpdate.Description_tr = viewModel.Description_tr;
+            projectToUpdate.Description_en = viewModel.Description_en;
+            projectToUpdate.Link = viewModel.Link;
+            projectToUpdate.Tools = viewModel.Tools;
 
             if (viewModel.ImageFile != null)
             {
@@ -139,7 +143,6 @@ namespace MyPortfolio.Web.Controllers
 
             try
             {
-                _context.Update(projectToUpdate);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -172,14 +175,14 @@ namespace MyPortfolio.Web.Controllers
             }
 
             // Pass project info to the view via ViewData or a simple ViewModel if preferred
-            ViewData["ProjectTitle"] = project.Title;
+            ViewData["ProjectTitle"] = project.Title_tr;
             return View();
         }
 
         // POST: ProjectAdmin/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var project = await _context.Projects.FindAsync(id);
             if (project == null)

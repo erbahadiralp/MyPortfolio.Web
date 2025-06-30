@@ -33,7 +33,7 @@ namespace MyPortfolio.Web.Controllers
         // POST: EducationAdmin/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,School,Department,DateRange,Description")] Education education)
+        public async Task<IActionResult> Create([Bind("Id,School_tr,School_en,Department_tr,Department_en,DateRange_tr,DateRange_en,Description_tr,Description_en")] Education education)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace MyPortfolio.Web.Controllers
         // POST: EducationAdmin/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,School,Department,DateRange,Description")] Education education)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,School_tr,School_en,Department_tr,Department_en,DateRange_tr,DateRange_en,Description_tr,Description_en")] Education education)
         {
             if (id != education.Id)
             {
@@ -79,7 +79,7 @@ namespace MyPortfolio.Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_context.Educations.Any(e => e.Id == education.Id))
+                    if (!EducationExists(education.Id))
                     {
                         return NotFound();
                     }
@@ -120,6 +120,11 @@ namespace MyPortfolio.Web.Controllers
             _context.Educations.Remove(education);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool EducationExists(int id)
+        {
+            return _context.Educations.Any(e => e.Id == id);
         }
     }
 } 

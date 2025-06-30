@@ -16,14 +16,20 @@ namespace MyPortfolio.Web.Models.ViewModels
         [Display(Name = "Soyad")]
         public string LastName { get; set; }
 
-        [Display(Name = "Açıklama (Ana Sayfa)")]
-        public string Description { get; set; }
-        
-        [Display(Name = "Kısa Açıklama (Sidebar)")]
-        public string ShortDescription { get; set; }
+        [Display(Name = "Açıklama (TR)")]
+        public string? Description_tr { get; set; }
+
+        [Display(Name = "Açıklama (EN)")]
+        public string? Description_en { get; set; }
+
+        [Display(Name = "Kısa Açıklama (TR)")]
+        public string? ShortDescription_tr { get; set; }
+
+        [Display(Name = "Kısa Açıklama (EN)")]
+        public string? ShortDescription_en { get; set; }
 
         [Display(Name = "Adres")]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [Display(Name = "Telefon")]
         public string Phone { get; set; }

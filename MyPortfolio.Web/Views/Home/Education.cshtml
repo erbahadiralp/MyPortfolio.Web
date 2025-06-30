@@ -1,11 +1,13 @@
-﻿@model List<MyPortfolio.Web.Models.Entities.Education>
+﻿@model IEnumerable<MyPortfolio.Web.Models.Entities.Education>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
-<h2 class="section-title">Education</h2>
-@foreach (var x in Model)
+<div class="timeline">
+    @foreach (var education in Model)
 {
     <div class="timeline-item blue">
         <div class="timeline-header">
-            <h3 class="timeline-title">@x.Department</h3>
+                <h3 class="timeline-title">@education.Department</h3>
             <span class="timeline-date">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -13,13 +15,14 @@
                     <line x1="8" y1="2" x2="8" y2="6"></line>
                     <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
-                @x.DateRange
+                    @education.DateRange
             </span>
         </div>
-        <p class="timeline-company">@x.School</p>
+            <p class="timeline-company">@education.School</p>
         <p class="timeline-description">
-            @x.Description
+                @education.Description
         </p>
     </div>
 }
+</div>
 

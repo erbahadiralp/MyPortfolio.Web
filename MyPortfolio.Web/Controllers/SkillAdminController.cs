@@ -36,15 +36,23 @@ namespace MyPortfolio.Web.Controllers
         // POST: SkillAdmin/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Category")] Skill skill)
+        public async Task<IActionResult> Create(Skill model)
         {
             if (ModelState.IsValid)
             {
+                var skill = new Skill
+                {
+                    Name_tr = model.Name_tr,
+                    Name_en = model.Name_en,
+                    Category_tr = model.Category_tr,
+                    Category_en = model.Category_en
+                };
                 _context.Add(skill);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(skill);
+            ViewBag.Kategoriler = GetCategorySelectList(model.Category_tr);
+            return View(model);
         }
 
         // GET: SkillAdmin/Edit/5
@@ -60,16 +68,16 @@ namespace MyPortfolio.Web.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Kategoriler = GetCategorySelectList(skill.Category);
+            ViewBag.Kategoriler = GetCategorySelectList(skill.Category_tr);
             return View(skill);
         }
 
         // POST: SkillAdmin/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Category")] Skill skill)
+        public async Task<IActionResult> Edit(int id, Skill model)
         {
-            if (id != skill.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -78,12 +86,19 @@ namespace MyPortfolio.Web.Controllers
             {
                 try
                 {
-                    _context.Update(skill);
+                    var skillToUpdate = await _context.Skills.FindAsync(id);
+                    if(skillToUpdate == null) return NotFound();
+
+                    skillToUpdate.Name_tr = model.Name_tr;
+                    skillToUpdate.Name_en = model.Name_en;
+                    skillToUpdate.Category_tr = model.Category_tr;
+                    skillToUpdate.Category_en = model.Category_en;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_context.Skills.Any(e => e.Id == skill.Id))
+                    if (!_context.Skills.Any(e => e.Id == model.Id))
                     {
                         return NotFound();
                     }
@@ -94,7 +109,8 @@ namespace MyPortfolio.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(skill);
+            ViewBag.Kategoriler = GetCategorySelectList(model.Category_tr);
+            return View(model);
         }
 
         // GET: SkillAdmin/Delete/5
@@ -121,22 +137,32 @@ namespace MyPortfolio.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var skill = await _context.Skills.FindAsync(id);
-            _context.Skills.Remove(skill);
+            if (skill != null) _context.Skills.Remove(skill);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private SelectList GetCategorySelectList(string selectedValue = null)
+        private SelectList GetCategorySelectList(string? selectedValue = null)
         {
-            var categories = new List<string>
+            // This is now problematic as categories are bilingual.
+            // This is a temporary solution. A better approach would be a separate table for categories.
+            var categories = new Dictionary<string, string>
             {
-                "Programming Languages",
-                "Frameworks & Libraries",
-                "Databases",
-                "Tools & Platforms",
-                "Other"
+                { "Programming Languages", "Programlama Dilleri" },
+                { "Frameworks & Libraries", "Frameworkler & Kütüphaneler" },
+                { "Databases", "Veritabanları" },
+                { "Tools & Platforms", "Araçlar & Platformlar" },
+                { "Other", "Diğer" }
             };
-            return new SelectList(categories, selectedValue);
+            
+            // For the SelectList, we need to decide which language to show. We'll use the English name for the value.
+            var selectListItems = categories.Select(c => new SelectListItem
+            {
+                Value = c.Key,
+                Text = $"{c.Value} / {c.Key}"
+            });
+
+            return new SelectList(selectListItems, "Value", "Text", selectedValue);
         }
     }
 } 

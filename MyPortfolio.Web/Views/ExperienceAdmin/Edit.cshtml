@@ -27,46 +27,74 @@
     <input type="hidden" asp-for="Id" />
     
     <div class="row">
-        <div class="form-group col-md-6">
-            <label asp-for="Title" class="control-label"></label>
-            <input asp-for="Title" class="form-control" />
-            <span asp-validation-for="Title" class="text-danger"></span>
+        @* Turkish Fields *@
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Title_tr" class="control-label"></label>
+                <input asp-for="Title_tr" class="form-control" />
+                <span asp-validation-for="Title_tr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Company_tr" class="control-label"></label>
+                <input asp-for="Company_tr" class="form-control" />
+                <span asp-validation-for="Company_tr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location_tr" class="control-label"></label>
+                <input asp-for="Location_tr" class="form-control" />
+                <span asp-validation-for="Location_tr" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateRange_tr" class="control-label"></label>
+                <input asp-for="DateRange_tr" class="form-control" />
+                <span asp-validation-for="DateRange_tr" class="text-danger"></span>
+            </div>
         </div>
-        <div class="form-group col-md-6">
-            <label asp-for="Company" class="control-label"></label>
-            <input asp-for="Company" class="form-control" />
-            <span asp-validation-for="Company" class="text-danger"></span>
+
+        @* English Fields *@
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Title_en" class="control-label"></label>
+                <input asp-for="Title_en" class="form-control" />
+                <span asp-validation-for="Title_en" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Company_en" class="control-label"></label>
+                <input asp-for="Company_en" class="form-control" />
+                <span asp-validation-for="Company_en" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location_en" class="control-label"></label>
+                <input asp-for="Location_en" class="form-control" />
+                <span asp-validation-for="Location_en" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateRange_en" class="control-label"></label>
+                <input asp-for="DateRange_en" class="form-control" />
+                <span asp-validation-for="DateRange_en" class="text-danger"></span>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label asp-for="Location" class="control-label"></label>
-            <input asp-for="Location" class="form-control" />
-            <span asp-validation-for="Location" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-6">
-            <label asp-for="DateRange" class="control-label"></label>
-            <input asp-for="DateRange" class="form-control" />
-            <span asp-validation-for="DateRange" class="text-danger"></span>
-        </div>
-    </div>
-    
     <hr/>
     
     <h5>Sorumluluklar</h5>
     <div id="responsibilities-container">
         @for (int i = 0; i < Model.Responsibilities.Count; i++)
         {
-            <div class="form-group responsibility-item">
-                <input type="hidden" asp-for="Responsibilities[i].Id" />
-                <input type="hidden" asp-for="Responsibilities[i].ExperienceId" />
-                <div class="input-group">
-                    <input asp-for="Responsibilities[i].Description" class="form-control" placeholder="Sorumluluk açıklaması..."/>
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-danger remove-responsibility">Sil</button>
+            <div class="form-group responsibility-item p-3 border rounded mb-2">
+                 <input type="hidden" asp-for="Responsibilities[i].Id" />
+                 <div class="row">
+                    <div class="col-md-6">
+                        <label asp-for="Responsibilities[i].Description_tr" class="control-label">Açıklama (TR)</label>
+                        <textarea asp-for="Responsibilities[i].Description_tr" class="form-control" rows="2"></textarea>
                     </div>
-                </div>
+                    <div class="col-md-6">
+                        <label asp-for="Responsibilities[i].Description_en" class="control-label">Açıklama (EN)</label>
+                        <textarea asp-for="Responsibilities[i].Description_en" class="form-control" rows="2"></textarea>
+                    </div>
+                 </div>
+                 <button type="button" class="btn btn-danger btn-sm mt-2 remove-responsibility">Bu Sorumluluğu Sil</button>
             </div>
         }
     </div>
@@ -85,31 +113,41 @@
         $(document).ready(function () {
             let respContainer = $('#responsibilities-container');
 
-            // Add new responsibility input
-            $('#add-responsibility').on('click', function () {
-                let newIndex = respContainer.find('.responsibility-item').length;
-                let newItem = `
-                    <div class="form-group responsibility-item">
-                        <input type="hidden" name="Responsibilities[${newIndex}].Id" value="0" />
-                        <div class="input-group">
-                             <input type="text" name="Responsibilities[${newIndex}].Description" class="form-control" placeholder="Sorumluluk açıklaması..." />
-                             <div class="input-group-append">
-                                <button type="button" class="btn btn-danger remove-responsibility">Sil</button>
-                            </div>
-                        </div>
-                    </div>`;
-                respContainer.append(newItem);
-            });
-
-            // Remove responsibility input
-            respContainer.on('click', '.remove-responsibility', function () {
-                $(this).closest('.responsibility-item').remove();
-                // Re-index remaining items to ensure model binding works correctly on post
+            function reindexResponsibilities() {
                 respContainer.find('.responsibility-item').each(function(index, item) {
-                    $(item).find('input[name^="Responsibilities"]').each(function() {
-                        $(this).attr('name', $(this).attr('name').replace(/\[\d+\]/, '[' + index + ']'));
+                    $(item).find('input, textarea').each(function() {
+                        let name = $(this).attr('name');
+                        if (name) {
+                            let newName = name.replace(/\[\d+\]/, '[' + index + ']');
+                            $(this).attr('name', newName);
+                        }
                     });
                 });
+            }
+
+            $('#add-responsibility').on('click', function () {
+                let newIndex = respContainer.find('.responsibility-item').length;
+                let newItemHtml = `
+                    <div class="form-group responsibility-item p-3 border rounded mb-2">
+                        <input type="hidden" name="Responsibilities[${newIndex}].Id" value="0" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label name="Responsibilities[${newIndex}].Description_tr" class="control-label">Açıklama (TR)</label>
+                                <textarea name="Responsibilities[${newIndex}].Description_tr" class="form-control" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label name="Responsibilities[${newIndex}].Description_en" class="control-label">Açıklama (EN)</label>
+                                <textarea name="Responsibilities[${newIndex}].Description_en" class="form-control" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-danger btn-sm mt-2 remove-responsibility">Bu Sorumluluğu Sil</button>
+                    </div>`;
+                respContainer.append(newItemHtml);
+            });
+
+            respContainer.on('click', '.remove-responsibility', function () {
+                $(this).closest('.responsibility-item').remove();
+                reindexResponsibilities();
             });
         });
     </script>

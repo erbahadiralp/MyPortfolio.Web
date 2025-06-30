@@ -7,13 +7,21 @@ namespace MyPortfolio.Web.Models.ViewModels
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Proje başlığı boş bırakılamaz.")]
+        [Required(ErrorMessage = "Proje başlığı (TR) boş bırakılamaz.")]
         [StringLength(150)]
-        [Display(Name = "Proje Başlığı")]
-        public string Title { get; set; }
+        [Display(Name = "Proje Başlığı (TR)")]
+        public string Title_tr { get; set; }
 
-        [Display(Name = "Açıklama")]
-        public string? Description { get; set; }
+        [Required(ErrorMessage = "Proje başlığı (EN) boş bırakılamaz.")]
+        [StringLength(150)]
+        [Display(Name = "Proje Başlığı (EN)")]
+        public string Title_en { get; set; }
+
+        [Display(Name = "Açıklama (TR)")]
+        public string? Description_tr { get; set; }
+
+        [Display(Name = "Açıklama (EN)")]
+        public string? Description_en { get; set; }
 
         [Display(Name = "Proje Linki")]
         public string? Link { get; set; }

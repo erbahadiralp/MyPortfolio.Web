@@ -220,6 +220,7 @@ body.dark .social-icon {
 /* Main Content */
 .main-content {
   flex: 1;
+  min-width: 0; /* Solves flexbox overflow issue */
 }
 
 .sections {
@@ -849,4 +850,23 @@ html {
 /* Main Content Styles */
 .main-content {
   flex-grow: 1;
+}
+
+/* Language Switcher */
+.language-switcher {
+    display: flex;
+    align-items: center;
+}
+
+.language-switcher .btn-link {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: inherit; /* Inherit font size from nav-link */
+}
+
+.language-switcher .active-lang {
+    font-weight: bold;
+    text-decoration: underline;
 }

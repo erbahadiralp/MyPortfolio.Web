@@ -1,6 +1,16 @@
 ﻿@model MyPortfolio.Web.Models.ViewModels.HomePageViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Localization
+@using MyPortfolio.Web
+
+@inject IStringLocalizer<SharedResource> Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
 @{
-    ViewData["Title"] = "Ana Sayfa";
+    ViewData["Title"] = Localizer["Home"];
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
 }
 
 <nav class="navbar">
@@ -9,12 +19,29 @@
             <div class="nav-items">
                 <a href="#ana-sayfa" class="site-title">Bahadır Alp Er</a>
                 <div class="nav-links">
-                    <a href="#ana-sayfa" class="nav-link">Home</a>
-                    <a href="#egitim" class="nav-link">Education</a>
-                    <a href="#deneyim" class="nav-link">Experience</a>
-                    <a href="#projeler" class="nav-link">Projects</a>
-                    <a href="#yetenekler" class="nav-link">Skills</a>
-                    <a href="#iletisim" class="nav-link">Contact</a>
+                    <a href="#ana-sayfa" class="nav-link">@Localizer["Home"]</a>
+                    <a href="#egitim" class="nav-link">@Localizer["Education"]</a>
+                    <a href="#deneyim" class="nav-link">@Localizer["Experience"]</a>
+                    <a href="#projeler" class="nav-link">@Localizer["Projects"]</a>
+                    <a href="#yetenekler" class="nav-link">@Localizer["Skills"]</a>
+                    <a href="#iletisim" class="nav-link">@Localizer["Contact"]</a>
+
+                    <div class="language-switcher">
+                        <form id="selectLanguageTr" asp-controller="Home" asp-action="SetLanguage"
+                              asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"
+                              method="post" class="form-horizontal" role="form">
+                            <input type="hidden" name="culture" value="tr-TR" />
+                            <button type="submit" class="nav-link btn-link @(currentCulture.StartsWith("tr") ? "active-lang" : "")">TR</button>
+                        </form>
+                        <span class="nav-link">/</span>
+                        <form id="selectLanguageEn" asp-controller="Home" asp-action="SetLanguage"
+                              asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"
+                              method="post" class="form-horizontal" role="form">
+                             <input type="hidden" name="culture" value="en-US" />
+                            <button type="submit" class="nav-link btn-link @(currentCulture.StartsWith("en") ? "active-lang" : "")">EN</button>
+                        </form>
+                    </div>
+
                     <button class="theme-toggle" id="theme-toggle-button">
                         <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -77,7 +104,7 @@
                                 <polyline points="7 10 12 15 17 10"></polyline>
                                 <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
-                            <span>Download CV</span>
+                            <span>@Localizer["DownloadCV"]</span>
                         </a>
                     </div>
                 }
@@ -85,28 +112,31 @@
         </div>
         <div class="main-content">
             <div class="sections">
-                @foreach (var x in Model.Abouts)
+                @foreach (var about in Model.Abouts)
                 {
                     <section id="ana-sayfa" class="section">
-                        <h1 class="welcome-title">Welcome</h1>
-                        <p class="content-paragraph">
-                            @x.Description
-                        </p>
+                        <h2 class="section-title welcome-title">@Localizer["Welcome"]</h2>
+                        <p class="content-paragraph">@about.Description</p>
                     </section>
                 }
                 <section id="egitim" class="section">
-                    <partial name="Education" for="Educations" />
+                    <h2 class="section-title">@Localizer["Education"]</h2>
+                    @await Html.PartialAsync("Education", Model.Educations)
                 </section>
                 <section id="deneyim" class="section">
-                    <partial name="Experience" for="Experiences" />
+                    <h2 class="section-title">@Localizer["Experience"]</h2>
+                    @await Html.PartialAsync("Experience", Model.Experiences)
                 </section>
                 <section id="projeler" class="section">
-                    <partial name="Projects" for="Projects" />
+                    <h2 class="section-title">@Localizer["Projects"]</h2>
+                    @await Html.PartialAsync("Projects", Model.Projects)
                 </section>
                 <section id="yetenekler" class="section">
-                    <partial name="Skill" for="Skills" />
+                    <h2 class="section-title">@Localizer["Skills"]</h2>
+                    @await Html.PartialAsync("Skill", Model.Skills)
                 </section>
                 <section id="iletisim" class="section">
+                    <h2 class="section-title">@Localizer["Contact"]</h2>
                     <partial name="Contact" model="Model.ContactMessage" view-data='new ViewDataDictionary(ViewData) { { "AboutInfo", Model.Abouts.FirstOrDefault() } }' />
                 </section>
             </div>

@@ -1,13 +1,14 @@
-﻿@model List<MyPortfolio.Web.Models.Entities.Experience>
+﻿@model IEnumerable<MyPortfolio.Web.Models.Entities.Experience>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
-    <h2 class="section-title">Experience</h2>
-    @foreach (var x in Model)
+@foreach (var experience in Model)
     {
         <div class="experience-card">
             <div class="experience-header">
                 <div class="experience-info">
-                <h3>@x.Title</h3>
-                <p class="experience-company">@x.Company</p>
+                <h3>@experience.Title</h3>
+                <p class="experience-company">@experience.Company</p>
             </div>
             <div class="experience-meta">
                 <span class="timeline-date">
@@ -17,22 +18,22 @@
                         <line x1="8" y1="2" x2="8" y2="6"></line>
                         <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    @x.DateRange
+                    @experience.DateRange
                 </span>
                 <span class="timeline-date">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
                     </svg>
-                    @if (!string.IsNullOrEmpty(x.Location))
+                    @if (!string.IsNullOrEmpty(experience.Location))
                     {
-                        @x.Location
+                        @experience.Location
                     }
                 </span>
             </div>
         </div>
         <ul class="experience-list">
-            @foreach(var responsibility in x.ExperienceResponsibilities)
+            @foreach(var responsibility in experience.ExperienceResponsibilities)
             {
                 <li>@responsibility.Description</li>
             }

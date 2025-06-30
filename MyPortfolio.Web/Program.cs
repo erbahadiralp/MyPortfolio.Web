@@ -50,15 +50,29 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
 
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("tr-TR")
+    };
+
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider()
+    };
+});
+
 var app = builder.Build();
 
 app.UseForwardedHeaders();
 
-var localizationOptions = new RequestLocalizationOptions
-{
-    SupportedUICultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("tr-TR") }
-};
-app.UseRequestLocalization(localizationOptions);
+app.UseRequestLocalization();
 
 // apply migrations and seed database
 using (var scope = app.Services.CreateScope())
