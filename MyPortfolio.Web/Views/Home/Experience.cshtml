@@ -1,42 +1,47 @@
-﻿@model IEnumerable<MyPortfolio.Web.Models.Entities.Experience>
+@model IEnumerable<MyPortfolio.Web.Models.Entities.Experience>
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
+<div class="minimal-section">
 @foreach (var experience in Model)
-    {
-        <div class="experience-card">
-            <div class="experience-header">
-                <div class="experience-info">
-                <h3>@experience.Title</h3>
-                <p class="experience-company">@experience.Company</p>
-            </div>
-            <div class="experience-meta">
-                <span class="timeline-date">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    @experience.DateRange
-                </span>
-                <span class="timeline-date">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    @if (!string.IsNullOrEmpty(experience.Location))
-                    {
-                        @experience.Location
-                    }
-                </span>
-            </div>
-        </div>
-        <ul class="experience-list">
-            @foreach(var responsibility in experience.ExperienceResponsibilities)
+{
+    // Extract first 2 characters as an abbreviation for the logo box
+    var abbrev = experience.Company.Length >= 2 ? experience.Company.Substring(0, 2).ToUpper() : experience.Company.ToUpper();
+
+    <div class="minimal-row">
+        <div class="minimal-logo-box">
+            @if (!string.IsNullOrEmpty(experience.ImageUrl))
             {
-                <li>@responsibility.Description</li>
+                <img src="@experience.ImageUrl" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />
             }
-        </ul>
+            else
+            {
+                @abbrev
+            }
+        </div>
+        <div class="minimal-content">
+            <div class="minimal-header">
+                <div class="minimal-title">@experience.Company</div>
+                <div class="minimal-date">@experience.DateRange</div>
+            </div>
+            <div class="minimal-subtitle">
+                @experience.Title
+                @if (!string.IsNullOrEmpty(experience.Location))
+                {
+                    <text> &middot; @experience.Location</text>
+                }
+            </div>
+            
+            @if (experience.ExperienceResponsibilities != null && experience.ExperienceResponsibilities.Any())
+            {
+                <ul class="minimal-list">
+                    @foreach(var responsibility in experience.ExperienceResponsibilities)
+                    {
+                        <li>@responsibility.Description</li>
+                    }
+                </ul>
+            }
+        </div>
     </div>
 }
+</div>

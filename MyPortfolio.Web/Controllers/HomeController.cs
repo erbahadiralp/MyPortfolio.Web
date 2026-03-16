@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Localization;
 
 namespace MyPortfolio.Web.Controllers
 {
@@ -15,11 +16,13 @@ namespace MyPortfolio.Web.Controllers
     {
         private readonly MyPortfolioDbContext _context;
         private readonly ILogger<HomeController> _logger;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public HomeController(MyPortfolioDbContext context, ILogger<HomeController> logger)
+        public HomeController(MyPortfolioDbContext context, ILogger<HomeController> logger, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _logger = logger;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
@@ -31,6 +34,7 @@ namespace MyPortfolio.Web.Controllers
                 Educations = _context.Educations.ToList(),
                 Skills = _context.Skills.ToList(),
                 Projects = _context.Projects.ToList(),
+                Certificates = _context.Certificates.OrderBy(c => c.DisplayOrder).ToList(),
                 ContactMessage = new ContactMessage()
             };
             return View(viewModel);
@@ -50,13 +54,13 @@ namespace MyPortfolio.Web.Controllers
                     contactForm.SentDate = DateTime.Now;
                     _context.ContactMessages.Add(contactForm);
                     _context.SaveChanges();
-                    TempData["SuccessMessage"] = "Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağım.";
+                    TempData["SuccessMessage"] = _localizer["ContactSuccess"].Value;
                     return Redirect(Url.Action("Index", "Home") + "#iletisim");
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error saving contact message to database.");
-                    TempData["ErrorMessage"] = "Mesajınız gönderilirken bir veritabanı hatası oluştu.";
+                    TempData["ErrorMessage"] = _localizer["ContactError"].Value;
                     return Redirect(Url.Action("Index", "Home") + "#iletisim");
                 }
             }
@@ -70,21 +74,40 @@ namespace MyPortfolio.Web.Controllers
                 Educations = _context.Educations.ToList(),
                 Skills = _context.Skills.ToList(),
                 Projects = _context.Projects.ToList(),
+                Certificates = _context.Certificates.OrderBy(c => c.DisplayOrder).ToList(),
                 ContactMessage = contactForm 
             };
 
             return View("Index", viewModel);
         }
 
+        private static readonly string[] _supportedCultures = ["tr-TR", "en-US"];
+
         public IActionResult SetLanguage(string culture, string returnUrl)
         {
-            Response.Cookies.Append(
-                CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-            );
+            try
+            {
+                if (string.IsNullOrEmpty(culture) || !_supportedCultures.Contains(culture))
+                    return BadRequest();
 
-            return LocalRedirect(returnUrl);
+                Response.Cookies.Append(
+                    CookieRequestCultureProvider.DefaultCookieName,
+                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                    new CookieOptions
+                    {
+                        Expires = DateTimeOffset.UtcNow.AddYears(1),
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Lax,
+                        Secure = false  // HTTP ortamı için false
+                    }
+                );
+
+                return LocalRedirect(returnUrl ?? "/");
+            }
+            catch
+            {
+                return Redirect("/");
+            }
         }
 
         public IActionResult Privacy()

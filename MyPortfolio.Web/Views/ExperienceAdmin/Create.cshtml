@@ -9,24 +9,29 @@
 <h4>Yeni Deneyim Ekleme Sayfası</h4>
 <hr />
 
-<form asp-action="Create" method="post">
+<form asp-action="Create" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="row">
         @* Turkish Fields *@
         <div class="col-md-6">
             <div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input asp-for="Logo" type="file" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Title_tr" class="control-label"></label>
                 <input asp-for="Title_tr" class="form-control" />
                 <span asp-validation-for="Title_tr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Company_tr" class="control-label"></label>
+                <label class="control-label">Şirket / Company</label>
                 <input asp-for="Company_tr" class="form-control" />
                 <span asp-validation-for="Company_tr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Location_tr" class="control-label"></label>
+                <label class="control-label">Konum / Location</label>
                 <input asp-for="Location_tr" class="form-control" />
                 <span asp-validation-for="Location_tr" class="text-danger"></span>
             </div>
@@ -45,14 +50,9 @@
                 <span asp-validation-for="Title_en" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Company_en" class="control-label"></label>
-                <input asp-for="Company_en" class="form-control" />
-                <span asp-validation-for="Company_en" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location_en" class="control-label"></label>
-                <input asp-for="Location_en" class="form-control" />
-                <span asp-validation-for="Location_en" class="text-danger"></span>
+                <label asp-for="Title_en" class="control-label"></label>
+                <input asp-for="Title_en" class="form-control" />
+                <span asp-validation-for="Title_en" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateRange_en" class="control-label"></label>

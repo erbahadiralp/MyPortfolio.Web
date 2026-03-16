@@ -18,5 +18,7 @@ RUN dotnet publish "MyPortfolio.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
+RUN adduser --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MyPortfolio.Web.dll"]

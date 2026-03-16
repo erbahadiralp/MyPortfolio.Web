@@ -6,16 +6,23 @@ using MyPortfolio.Web.Models.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System;
+
 namespace MyPortfolio.Web.Controllers
 {
     [Authorize]
     public class EducationAdminController : Controller
     {
         private readonly MyPortfolioDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public EducationAdminController(MyPortfolioDbContext context)
+        public EducationAdminController(MyPortfolioDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: EducationAdmin
@@ -33,10 +40,23 @@ namespace MyPortfolio.Web.Controllers
         // POST: EducationAdmin/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,School_tr,School_en,Department_tr,Department_en,DateRange_tr,DateRange_en,Description_tr,Description_en")] Education education)
+        public async Task<IActionResult> Create([Bind("Id,School_tr,School_en,Department_tr,Department_en,DateRange_tr,DateRange_en,Description_tr,Description_en,ImageUrl")] Education education, IFormFile? Logo)
         {
             if (ModelState.IsValid)
             {
+                if (Logo != null && Logo.Length > 0)
+                {
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "static/logos");
+                    Directory.CreateDirectory(uploadsFolder);
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(Logo.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await Logo.CopyToAsync(fileStream);
+                    }
+                    education.ImageUrl = "/static/logos/" + uniqueFileName;
+                }
+
                 _context.Add(education);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -63,7 +83,7 @@ namespace MyPortfolio.Web.Controllers
         // POST: EducationAdmin/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,School_tr,School_en,Department_tr,Department_en,DateRange_tr,DateRange_en,Description_tr,Description_en")] Education education)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,School_tr,School_en,Department_tr,Department_en,DateRange_tr,DateRange_en,Description_tr,Description_en,ImageUrl")] Education education, IFormFile? Logo)
         {
             if (id != education.Id)
             {
@@ -74,6 +94,30 @@ namespace MyPortfolio.Web.Controllers
             {
                 try
                 {
+                    if (Logo != null && Logo.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "static/logos");
+                        Directory.CreateDirectory(uploadsFolder);
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(Logo.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await Logo.CopyToAsync(fileStream);
+                        }
+
+                        // Delete old file if exists
+                        if (!string.IsNullOrEmpty(education.ImageUrl))
+                        {
+                            var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, education.ImageUrl.TrimStart('/'));
+                            if (System.IO.File.Exists(oldPath))
+                            {
+                                System.IO.File.Delete(oldPath);
+                            }
+                        }
+
+                        education.ImageUrl = "/static/logos/" + uniqueFileName;
+                    }
+
                     _context.Update(education);
                     await _context.SaveChangesAsync();
                 }

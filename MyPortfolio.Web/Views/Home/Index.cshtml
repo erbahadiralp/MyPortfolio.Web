@@ -1,4 +1,4 @@
-﻿@model MyPortfolio.Web.Models.ViewModels.HomePageViewModel
+@model MyPortfolio.Web.Models.ViewModels.HomePageViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.Extensions.Options
 @using Microsoft.AspNetCore.Localization
@@ -16,37 +16,34 @@
 <nav class="navbar">
     <div class="nav-container">
         <div class="nav-content">
-            <div class="nav-items">
-                <a href="#ana-sayfa" class="site-title">Bahadır Alp Er</a>
-                <div class="nav-links">
-                    <a href="#ana-sayfa" class="nav-link">@Localizer["Home"]</a>
-                    <a href="#egitim" class="nav-link">@Localizer["Education"]</a>
-                    <a href="#deneyim" class="nav-link">@Localizer["Experience"]</a>
-                    <a href="#projeler" class="nav-link">@Localizer["Projects"]</a>
-                    <a href="#yetenekler" class="nav-link">@Localizer["Skills"]</a>
-                    <a href="#iletisim" class="nav-link">@Localizer["Contact"]</a>
+            <div class="nav-brand">
+                <a href="#ana-sayfa" class="site-title">&gt;_</a>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#ana-sayfa" class="nav-link">@Localizer["Home"]</a>
+                <a href="#egitim" class="nav-link">@Localizer["Education"]</a>
+                <a href="#deneyim" class="nav-link">@Localizer["Experience"]</a>
+                <a href="#projeler" class="nav-link">@Localizer["Projects"]</a>
+                <a href="#sertifikalar" class="nav-link">@Localizer["Certificates"]</a>
+                <a href="#yetenekler" class="nav-link">@Localizer["Skills"]</a>
+                <a href="#iletisim" class="nav-link">@Localizer["Contact"]</a>
+            </div>
 
-                    <div class="language-switcher">
-                        <form id="selectLanguageTr" asp-controller="Home" asp-action="SetLanguage"
-                              asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"
-                              method="post" class="form-horizontal" role="form">
-                            <input type="hidden" name="culture" value="tr-TR" />
-                            <button type="submit" class="nav-link btn-link @(currentCulture.StartsWith("tr") ? "active-lang" : "")">TR</button>
-                        </form>
-                        <span class="nav-link">/</span>
-                        <form id="selectLanguageEn" asp-controller="Home" asp-action="SetLanguage"
-                              asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"
-                              method="post" class="form-horizontal" role="form">
-                             <input type="hidden" name="culture" value="en-US" />
-                            <button type="submit" class="nav-link btn-link @(currentCulture.StartsWith("en") ? "active-lang" : "")">EN</button>
-                        </form>
-                    </div>
-
-                    <button class="theme-toggle" id="theme-toggle-button">
-                        <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                        </svg>
-                    </button>
+            <div class="nav-actions">
+                <div class="language-pill">
+                    <form id="selectLanguageTr" asp-controller="Home" asp-action="SetLanguage"
+                          asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"
+                          method="post" class="form-horizontal" role="form">
+                        <input type="hidden" name="culture" value="tr-TR" />
+                        <button type="submit" class="lang-btn @(currentCulture.StartsWith("tr") ? "active-lang" : "")">TR</button>
+                    </form>
+                    <form id="selectLanguageEn" asp-controller="Home" asp-action="SetLanguage"
+                          asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString"
+                          method="post" class="form-horizontal" role="form">
+                        <input type="hidden" name="culture" value="en-US" />
+                        <button type="submit" class="lang-btn @(currentCulture.StartsWith("en") ? "active-lang" : "")">EN</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -66,7 +63,8 @@
                         <p class="profile-bio">@x.ShortDescription</p>
                     </div>
                     <div class="social-links">
-                        <div class="social-link">
+                        <div class="sidebar-subheader">İLETİŞİM</div>
+                        <div class="social-link" style="margin-bottom: 0.5rem;">
                             <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                 <circle cx="12" cy="10" r="3"></circle>
@@ -82,7 +80,8 @@
                             <span>@x.Email</span>
                         </a>
 
-                        <a href="https://github.com/erbahadiralp" class="social-link" target="_blank">
+                        <div class="sidebar-subheader">BAĞLANTILAR</div>
+                        <a href="https://github.com/erbahadiralp" class="social-link" target="_blank" style="margin-bottom: 0.5rem;">
                             <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                             </svg>
@@ -99,11 +98,7 @@
                     </div>
                     <div class="download-cv">
                         <a href="@Url.Content("~" + x.CvDocumentUrl)" download class="download-button">
-                            <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                <polyline points="7 10 12 15 17 10"></polyline>
-                                <line x1="12" y1="15" x2="12" y2="3"></line>
-                            </svg>
+                            <span style="font-size: 1.2em; font-weight: 300; margin-right: 4px;">&darr;</span>
                             <span>@Localizer["DownloadCV"]</span>
                         </a>
                     </div>
@@ -131,6 +126,10 @@
                     <h2 class="section-title">@Localizer["Projects"]</h2>
                     @await Html.PartialAsync("Projects", Model.Projects)
                 </section>
+                <section id="sertifikalar" class="section">
+                    <h2 class="section-title">@Localizer["Certificates"]</h2>
+                    @await Html.PartialAsync("Certificate", Model.Certificates)
+                </section>
                 <section id="yetenekler" class="section">
                     <h2 class="section-title">@Localizer["Skills"]</h2>
                     @await Html.PartialAsync("Skill", Model.Skills)
@@ -144,7 +143,139 @@
     </div>
 </div>
 
+<button class="theme-toggle-floating" id="theme-toggle-button">
+    <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+</button>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!-- Fancybox v5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@fancyapps/ui@@5/dist/fancybox/fancybox.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@@fancyapps/ui@@5/dist/fancybox/fancybox.umd.js"></script>
+    <!-- PDF.js -->
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@@3.11.174/build/pdf.min.js"></script>
+    <style>
+        /* PDF.js lightbox container */
+        .pdf-fancybox-container {
+            display: none;
+            width: 88vw;
+            max-width: 960px;
+            height: 85vh;
+            background: #fff;
+            overflow-y: auto;
+            position: relative;
+        }
+        .pdf-fancybox-container canvas {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+            margin-bottom: 4px;
+        }
+        .pdf-loading-msg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #888;
+            font-size: 1rem;
+        }
+    </style>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            'https://cdn.jsdelivr.net/npm/pdfjs-dist@@3.11.174/build/pdf.worker.min.js';
+
+        // ---- Thumbnail rendering ----
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.cert-canvas[data-pdf-url]').forEach(function (canvas) {
+                renderPdfPage(canvas.getAttribute('data-pdf-url'), canvas, 1);
+            });
+        });
+
+        function renderPdfPage(url, canvas, pageNum) {
+            pdfjsLib.getDocument(url).promise.then(function (pdf) {
+                pdf.getPage(pageNum).then(function (page) {
+                    var wrapper = canvas.parentElement;
+                    var wrapperWidth = wrapper.offsetWidth || 280;
+                    var baseViewport = page.getViewport({ scale: 1 });
+                    var scale = wrapperWidth / baseViewport.width;
+                    var viewport = page.getViewport({ scale: scale });
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+                });
+            }).catch(function (e) { console.warn('PDF thumb error:', e); });
+        }
+
+        // ---- Lightbox full-render ----
+        document.querySelectorAll('.certificate-thumb-link').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var pdfUrl = link.getAttribute('href');
+                var caption = link.getAttribute('data-caption') || '';
+
+                // Create container
+                var container = document.createElement('div');
+                container.className = 'pdf-fancybox-container';
+                container.style.display = 'block';
+                container.innerHTML = '<div class="pdf-loading-msg">Yükleniyor…</div>';
+                document.body.appendChild(container);
+
+                var pdfRendered = false;
+
+                function renderPdfInContainer() {
+                    if (pdfRendered) return;
+                    pdfRendered = true;
+
+                    pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
+                        var loadingMsg = container.querySelector('.pdf-loading-msg');
+                        if (loadingMsg) loadingMsg.remove();
+
+                        var renderPage = function (pageNum) {
+                            pdf.getPage(pageNum).then(function (page) {
+                                var canvas = document.createElement('canvas');
+                                container.appendChild(canvas);
+
+                                // Use actual width after Fancybox rendered, fallback 880
+                                var containerWidth = container.clientWidth > 0
+                                    ? container.clientWidth
+                                    : Math.min(window.innerWidth * 0.88, 960);
+
+                                var baseViewport = page.getViewport({ scale: 1 });
+                                var scale = containerWidth / baseViewport.width;
+                                var viewport = page.getViewport({ scale: scale });
+
+                                canvas.width = viewport.width;
+                                canvas.height = viewport.height;
+                                page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport });
+
+                                if (pageNum < pdf.numPages) renderPage(pageNum + 1);
+                            });
+                        };
+                        renderPage(1);
+                    }).catch(function (e) { console.error('PDF load error:', e); });
+                }
+
+                Fancybox.show([{
+                    src: container,
+                    type: 'inline',
+                    caption: caption
+                }], {
+                    on: {
+                        // `reveal` fires after the content is placed & visible in the DOM
+                        reveal: function (fancybox, slide) {
+                            renderPdfInContainer();
+                        },
+                        destroy: function () {
+                            if (document.body.contains(container)) {
+                                document.body.removeChild(container);
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 }
 

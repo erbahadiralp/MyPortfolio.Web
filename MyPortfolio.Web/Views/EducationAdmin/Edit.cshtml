@@ -9,9 +9,14 @@
 <h4>Eğitim Bilgisi Düzenleme Sayfası</h4>
 <hr />
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImageUrl" />
+    <div class="form-group">
+        <label class="control-label">Logo</label>
+        <input type="file" name="Logo" class="form-control" />
+    </div>
     <div class="form-group">
         <label asp-for="School_tr" class="control-label">Okul (TR)</label>
         <input asp-for="School_tr" class="form-control" />

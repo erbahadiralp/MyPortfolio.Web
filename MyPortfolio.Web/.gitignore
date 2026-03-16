@@ -1,6 +1,7 @@
 # Environment files
-production.env 
-
+production.env
+docker-compose.yml
+docker-compose.override.yml
 # Gizli/Ortama özel dosyalar
 # #######################
 appsettings.json
@@ -21,3 +22,9 @@ appsettings.Development.json
 # Log dosyaları
 # ###########
 *.log 
+
+# Sertifikalar
+certs/
+
+# Mac/Linux
+.DS_Store

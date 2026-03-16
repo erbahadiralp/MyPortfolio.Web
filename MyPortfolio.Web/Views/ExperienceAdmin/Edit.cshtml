@@ -22,25 +22,37 @@
 <h4>Deneyim Güncelleme Sayfası</h4>
 <hr />
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImageUrl" />
     
     <div class="row">
         @* Turkish Fields *@
         <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Logo" class="control-label">Logo Yükle (Değiştirmek için seçin)</label>
+                <input asp-for="Logo" type="file" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mt-2">
+                        <small class="text-muted">Mevcut Logo: <img src="@Model.ImageUrl" alt="Logo" style="height:30px; object-fit:contain;" /></small>
+                    </div>
+                }
+            </div>
             <div class="form-group">
                 <label asp-for="Title_tr" class="control-label"></label>
                 <input asp-for="Title_tr" class="form-control" />
                 <span asp-validation-for="Title_tr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Company_tr" class="control-label"></label>
+                <label class="control-label">Şirket / Company</label>
                 <input asp-for="Company_tr" class="form-control" />
                 <span asp-validation-for="Company_tr" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Location_tr" class="control-label"></label>
+                <label class="control-label">Konum / Location</label>
                 <input asp-for="Location_tr" class="form-control" />
                 <span asp-validation-for="Location_tr" class="text-danger"></span>
             </div>
@@ -59,14 +71,9 @@
                 <span asp-validation-for="Title_en" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Company_en" class="control-label"></label>
-                <input asp-for="Company_en" class="form-control" />
-                <span asp-validation-for="Company_en" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location_en" class="control-label"></label>
-                <input asp-for="Location_en" class="form-control" />
-                <span asp-validation-for="Location_en" class="text-danger"></span>
+                <label asp-for="Title_en" class="control-label"></label>
+                <input asp-for="Title_en" class="form-control" />
+                <span asp-validation-for="Title_en" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateRange_en" class="control-label"></label>

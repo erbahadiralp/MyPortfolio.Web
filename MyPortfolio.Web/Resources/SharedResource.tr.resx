@@ -92,4 +92,16 @@
   <data name="FormSendMessage" xml:space="preserve">
     <value>Mesaj Gönder</value>
   </data>
+  <data name="Certificates" xml:space="preserve">
+    <value>Sertifikalar</value>
+  </data>
+  <data name="NoCertificates" xml:space="preserve">
+    <value>Henüz sertifika eklenmemiş.</value>
+  </data>
+  <data name="ContactSuccess" xml:space="preserve">
+    <value>Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağım.</value>
+  </data>
+  <data name="ContactError" xml:space="preserve">
+    <value>Mesajınız gönderilirken bir hata oluştu. Lütfen tekrar deneyin.</value>
+  </data>
 </root> 

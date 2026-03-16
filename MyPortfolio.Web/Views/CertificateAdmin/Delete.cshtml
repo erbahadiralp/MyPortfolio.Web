@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Sertifika Sil";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<h4>Sertifika Silme</h4>
+<hr />
+
+<div class="alert alert-danger">
+    <strong>@ViewData["CertificateTitle"]</strong> adlı sertifikayı silmek istediğinize emin misiniz?
+    Bu işlem geri alınamaz ve PDF dosyası da silinecektir.
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" value="@Context.Request.RouteValues["id"]" />
+    <input type="submit" value="Evet, Sil" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

@@ -2,11 +2,19 @@ using MyPortfolio.Web.Models.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+using Microsoft.AspNetCore.Http;
+
 namespace MyPortfolio.Web.Models.ViewModels
 {
     public class ExperienceViewModel
     {
         public int Id { get; set; }
+
+        [Display(Name = "Logo Yolu")]
+        public string? ImageUrl { get; set; }
+
+        [Display(Name = "Logo Yükle")]
+        public IFormFile? Logo { get; set; }
 
         [Required(ErrorMessage = "Pozisyon (TR) alanı boş bırakılamaz.")]
         [StringLength(100)]
@@ -24,10 +32,9 @@ namespace MyPortfolio.Web.Models.ViewModels
         [Display(Name = "Şirket (TR)")]
         public string Company_tr { get; set; }
 
-        [Required(ErrorMessage = "Şirket (EN) alanı boş bırakılamaz.")]
         [StringLength(100)]
         [Display(Name = "Şirket (EN)")]
-        public string Company_en { get; set; }
+        public string? Company_en { get; set; }
 
 
         [Display(Name = "Konum (Türkçe)")]

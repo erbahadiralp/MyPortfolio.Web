@@ -7,16 +7,23 @@ using MyPortfolio.Web.Models.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System;
+
 namespace MyPortfolio.Web.Controllers
 {
     [Authorize]
     public class ExperienceAdminController : Controller
     {
         private readonly MyPortfolioDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ExperienceAdminController(MyPortfolioDbContext context)
+        public ExperienceAdminController(MyPortfolioDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: ExperienceAdmin
@@ -47,9 +54,9 @@ namespace MyPortfolio.Web.Controllers
                     Title_tr = viewModel.Title_tr,
                     Title_en = viewModel.Title_en,
                     Company_tr = viewModel.Company_tr,
-                    Company_en = viewModel.Company_en,
+                    Company_en = viewModel.Company_tr,
                     Location_tr = viewModel.Location_tr,
-                    Location_en = viewModel.Location_en,
+                    Location_en = viewModel.Location_tr,
                     DateRange_tr = viewModel.DateRange_tr,
                     DateRange_en = viewModel.DateRange_en,
                     ExperienceResponsibilities = viewModel.Responsibilities.Select(r => new ExperienceResponsibility
@@ -58,6 +65,19 @@ namespace MyPortfolio.Web.Controllers
                         Description_en = r.Description_en
                     }).ToList()
                 };
+
+                if (viewModel.Logo != null && viewModel.Logo.Length > 0)
+                {
+                    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "static/logos");
+                    Directory.CreateDirectory(uploadsFolder);
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.Logo.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await viewModel.Logo.CopyToAsync(fileStream);
+                    }
+                    experience.ImageUrl = "/static/logos/" + uniqueFileName;
+                }
 
                 _context.Experiences.Add(experience);
                 await _context.SaveChangesAsync();
@@ -94,6 +114,7 @@ namespace MyPortfolio.Web.Controllers
                 Location_en = experience.Location_en,
                 DateRange_tr = experience.DateRange_tr,
                 DateRange_en = experience.DateRange_en,
+                ImageUrl = experience.ImageUrl,
                 Responsibilities = experience.ExperienceResponsibilities.Select(r => new ExperienceResponsibilityViewModel
                 {
                     Id = r.Id,
@@ -131,9 +152,9 @@ namespace MyPortfolio.Web.Controllers
                     experience.Title_tr = viewModel.Title_tr;
                     experience.Title_en = viewModel.Title_en;
                     experience.Company_tr = viewModel.Company_tr;
-                    experience.Company_en = viewModel.Company_en;
+                    experience.Company_en = viewModel.Company_tr;
                     experience.Location_tr = viewModel.Location_tr;
-                    experience.Location_en = viewModel.Location_en;
+                    experience.Location_en = viewModel.Location_tr;
                     experience.DateRange_tr = viewModel.DateRange_tr;
                     experience.DateRange_en = viewModel.DateRange_en;
 
@@ -147,6 +168,34 @@ namespace MyPortfolio.Web.Controllers
                             Description_tr = respViewModel.Description_tr,
                             Description_en = respViewModel.Description_en
                         });
+                    }
+
+                    if (viewModel.Logo != null && viewModel.Logo.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "static/logos");
+                        Directory.CreateDirectory(uploadsFolder);
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(viewModel.Logo.FileName);
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await viewModel.Logo.CopyToAsync(fileStream);
+                        }
+                        
+                        // Delete old file if exists
+                        if (!string.IsNullOrEmpty(experience.ImageUrl))
+                        {
+                            var oldPath = Path.Combine(_webHostEnvironment.WebRootPath, experience.ImageUrl.TrimStart('/'));
+                            if (System.IO.File.Exists(oldPath))
+                            {
+                                System.IO.File.Delete(oldPath);
+                            }
+                        }
+                        
+                        experience.ImageUrl = "/static/logos/" + uniqueFileName;
+                    }
+                    else if (!string.IsNullOrEmpty(viewModel.ImageUrl))
+                    {
+                        experience.ImageUrl = viewModel.ImageUrl;
                     }
 
                     _context.Update(experience);

@@ -91,4 +91,16 @@
   <data name="FormSendMessage" xml:space="preserve">
     <value>Send Message</value>
   </data>
+  <data name="Certificates" xml:space="preserve">
+    <value>Certificates</value>
+  </data>
+  <data name="NoCertificates" xml:space="preserve">
+    <value>No certificates added yet.</value>
+  </data>
+  <data name="ContactSuccess" xml:space="preserve">
+    <value>Your message has been sent successfully! I will get back to you as soon as possible.</value>
+  </data>
+  <data name="ContactError" xml:space="preserve">
+    <value>An error occurred while sending your message. Please try again.</value>
+  </data>
 </root> 

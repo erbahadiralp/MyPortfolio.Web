@@ -1,0 +1,63 @@
+@model IEnumerable<MyPortfolio.Web.Models.Entities.Certificate>
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<MyPortfolio.Web.SharedResource> Localizer
+
+@if (Model != null && Model.Any())
+{
+    <div class="certificate-grid">
+        @foreach (var cert in Model)
+        {
+            <div class="certificate-card">
+                @if (!string.IsNullOrEmpty(cert.PdfUrl))
+                {
+                    <a href="@Url.Content("~/static/certificates/" + cert.PdfUrl)"
+                       data-fancybox="certificates"
+                       data-type="iframe"
+                       data-caption="@cert.Title — @cert.Issuer"
+                       class="certificate-thumb-link">
+                        <div class="certificate-thumb-wrapper">
+                            <canvas class="cert-canvas"
+                                    data-pdf-url="@Url.Content("~/static/certificates/" + cert.PdfUrl)">
+                            </canvas>
+                            <div class="cert-overlay">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cert-zoom-icon">
+                                    <path d="M1 1l22 22M17.5 17.5A9.953 9.953 0 0 1 11 20C5.477 20 1 15.523 1 10a9.953 9.953 0 0 1 2.5-6.5M6.343 3.343A9.957 9.957 0 0 1 11 2c5.523 0 10 4.477 10 10a9.957 9.957 0 0 1-1.343 4.657M15 11a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path>
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <div class="certificate-thumb-wrapper no-pdf">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="cert-icon-placeholder">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                }
+                <div class="certificate-info">
+                    <h4 class="cert-title">@cert.Title</h4>
+                    @if (!string.IsNullOrEmpty(cert.Issuer))
+                    {
+                        <p class="cert-issuer">@cert.Issuer</p>
+                    }
+                    @if (!string.IsNullOrEmpty(cert.DateRange))
+                    {
+                        <span class="cert-date">@cert.DateRange</span>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="text-muted">@Localizer["NoCertificates"]</p>
+}
+
+

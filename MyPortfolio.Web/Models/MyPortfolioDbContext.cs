@@ -25,6 +25,8 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
 
     public virtual DbSet<Skill> Skills { get; set; }
 
+    public virtual DbSet<Certificate> Certificates { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder); // This is important for Identity tables
@@ -51,7 +53,7 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
 
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.FullName).HasMaxLength(100);
-            entity.Property(e => e.SentDate).HasColumnType("datetime");
+            entity.Property(e => e.SentDate).HasColumnType("timestamp without time zone");
             entity.Property(e => e.Subject).HasMaxLength(100);
         });
 
@@ -103,6 +105,23 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
 
             entity.Ignore(e => e.Name);
             entity.Ignore(e => e.Category);
+        });
+
+        modelBuilder.Entity<Certificate>(entity =>
+        {
+            entity.ToTable("Certificates");
+
+            entity.Ignore(e => e.Title);
+            entity.Ignore(e => e.Issuer);
+            entity.Ignore(e => e.DateRange);
+
+            entity.Property(e => e.Title_tr).HasMaxLength(200);
+            entity.Property(e => e.Title_en).HasMaxLength(200);
+            entity.Property(e => e.Issuer_tr).HasMaxLength(200);
+            entity.Property(e => e.Issuer_en).HasMaxLength(200);
+            entity.Property(e => e.DateRange_tr).HasMaxLength(100);
+            entity.Property(e => e.DateRange_en).HasMaxLength(100);
+            entity.Property(e => e.PdfUrl).HasColumnName("PdfURL");
         });
 
         OnModelCreatingPartial(modelBuilder);
