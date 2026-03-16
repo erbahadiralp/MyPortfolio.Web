@@ -37,7 +37,8 @@ namespace MyPortfolio.Web.Models
                     EmailConfirmed = true
                 };
 
-                var result = await userManager.CreateAsync(newAdminUser, "admin123");
+                var adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD") ?? "Admin2024!";
+var result = await userManager.CreateAsync(newAdminUser, adminPassword);
 
                 if (result.Succeeded)
                 {
