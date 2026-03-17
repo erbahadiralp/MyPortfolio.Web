@@ -42,10 +42,43 @@ namespace MyPortfolio.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Contact(ContactMessage contactForm)
+        public async Task<IActionResult> Contact(ContactMessage contactForm)
         {
-            _logger.LogInformation("Contact POST method invoked with standard model binding.");
+            _logger.LogInformation("Contact POST method invoked with Turnstile verification.");
 
+            // 1. Turnstile Verification
+            var turnstileResponse = Request.Form["cf-turnstile-response"];
+            var turnstileSecret = Environment.GetEnvironmentVariable("TURNSTILE_SECRET_KEY");
+
+            if (string.IsNullOrEmpty(turnstileResponse))
+            {
+                _logger.LogWarning("Turnstile token is missing.");
+                TempData["ErrorMessage"] = "Güvenlik doğrulaması yapılamadı.";
+                return Redirect(Url.Action("Index", "Home") + "#iletisim");
+            }
+
+            using (var client = new HttpClient())
+            {
+                var verifyResult = await client.PostAsync("https://challenges.cloudflare.com/turnstile/v0/siteverify", 
+                    new FormUrlEncodedContent(new Dictionary<string, string>
+                    {
+                        { "secret", turnstileSecret ?? "" },
+                        { "response", turnstileResponse! }
+                    }));
+
+                var jsonResponse = await verifyResult.Content.ReadAsStringAsync();
+                var resultDoc = JsonDocument.Parse(jsonResponse);
+                bool success = resultDoc.RootElement.GetProperty("success").GetBoolean();
+
+                if (!success)
+                {
+                    _logger.LogWarning("Turnstile verification failed: {Response}", jsonResponse);
+                    TempData["ErrorMessage"] = "Bot doğrulaması başarısız oldu.";
+                    return Redirect(Url.Action("Index", "Home") + "#iletisim");
+                }
+            }
+
+            // 2. Standard Validation & Save
             if (ModelState.IsValid)
             {
                 _logger.LogInformation("Model state is valid.");
@@ -53,7 +86,7 @@ namespace MyPortfolio.Web.Controllers
                 {
                     contactForm.SentDate = DateTime.Now;
                     _context.ContactMessages.Add(contactForm);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = _localizer["ContactSuccess"].Value;
                     return Redirect(Url.Action("Index", "Home") + "#iletisim");
                 }

@@ -95,6 +95,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
 
+builder.Services.AddHttpClient();
+
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
     var supportedCultures = new[]
@@ -188,12 +190,12 @@ app.Use(async (context, next) =>
     context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), payment=()";
     context.Response.Headers["Content-Security-Policy"] =
         "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://fonts.googleapis.com blob:; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://fonts.googleapis.com https://challenges.cloudflare.com blob:; " +
         "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://fonts.gstatic.com; " +
         "font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; " +
         "img-src 'self' data:; " +
-        "frame-src 'self'; " +
-        "connect-src 'self'; " +
+        "frame-src 'self' https://challenges.cloudflare.com; " +
+        "connect-src 'self' https://challenges.cloudflare.com; " +
         "object-src 'none'; " +
         "worker-src 'self' blob: https://cdn.jsdelivr.net; " +
         // fix: CSP no-fallback directives [10055]

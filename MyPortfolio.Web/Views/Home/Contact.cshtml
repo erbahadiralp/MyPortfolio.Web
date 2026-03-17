@@ -79,6 +79,10 @@
                 <textarea asp-for="Message" class="form-control" placeholder="@Localizer["FormMessage"]"></textarea>
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <!-- Cloudflare Turnstile Widget -->
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAAA-YOUR-SITE-KEY-HERE" data-theme="auto"></div>
+            </div>
             <button type="submit" class="submit-btn">@Localizer["FormSendMessage"]</button>
         </form>
     </div>
