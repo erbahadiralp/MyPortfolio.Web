@@ -164,6 +164,7 @@ namespace MyPortfolio.Web.Controllers
             }
             if (viewModel.CvDocumentUrlFile != null)
             {
+                aboutEntity.CvOriginalFileName = viewModel.CvDocumentUrlFile.FileName;
                 aboutEntity.CvDocumentUrl = await SaveFile(viewModel.CvDocumentUrlFile, aboutEntity.CvDocumentUrl, "cv");
             }
 

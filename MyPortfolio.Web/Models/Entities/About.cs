@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
@@ -52,4 +52,5 @@ public partial class About
     }
 
     public string? CvDocumentUrl { get; set; }
+    public string? CvOriginalFileName { get; set; }
 }

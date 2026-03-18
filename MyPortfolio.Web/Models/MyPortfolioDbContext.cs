@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyPortfolio.Web.Models.Entities;
 
@@ -40,6 +40,7 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
 
             entity.Property(e => e.Address).HasMaxLength(250);
             entity.Property(e => e.CvDocumentUrl).HasColumnName("CvDocumentURL");
+            entity.Property(e => e.CvOriginalFileName).HasMaxLength(255);
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.FirstName).HasMaxLength(50);
             entity.Property(e => e.ImageUrl).HasColumnName("ImageURL");

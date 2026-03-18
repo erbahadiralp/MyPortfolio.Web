@@ -2,7 +2,7 @@
 
 @if (Model != null && !string.IsNullOrEmpty(Model.CvDocumentUrl))
 {
-    <a class="nav-link" href="@Model.CvDocumentUrl" target="_blank">
+    <a class="nav-link" href="@Model.CvDocumentUrl" download="@Model.CvOriginalFileName" target="_blank">
         <i class="fe fe-download"></i> CV'mi Indir
     </a>
 }
