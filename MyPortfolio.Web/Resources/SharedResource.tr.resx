@@ -104,4 +104,13 @@
   <data name="ContactError" xml:space="preserve">
     <value>Mesajınız gönderilirken bir hata oluştu. Lütfen tekrar deneyin.</value>
   </data>
+  <data name="Links" xml:space="preserve">
+    <value>Bağlantılar</value>
+  </data>
+  <data name="ProfilePhoto" xml:space="preserve">
+    <value>Profil Fotoğrafı</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Yükleniyor...</value>
+  </data>
 </root> 

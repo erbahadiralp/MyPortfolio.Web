@@ -56,14 +56,14 @@
                 @foreach (var x in Model.Abouts.Take(1))
                 {
                     <div class="profile-image">
-                        <img src="@Url.Content("~" + x.ImageUrl)" alt="Profil Fotoğrafı" class="avatar-img">
+                        <img src="@Url.Content("~" + x.ImageUrl)" alt="@Localizer["ProfilePhoto"]" class="avatar-img">
                     </div>
                     <div class="profile-info">
                         <h2 class="profile-name">@x.FirstName @x.LastName</h2>
                         <p class="profile-bio">@x.ShortDescription</p>
                     </div>
                     <div class="social-links">
-                        <div class="sidebar-subheader">İLETİŞİM</div>
+                        <div class="sidebar-subheader">@Localizer["Contact"].Value.ToUpper()</div>
                         <div class="social-link" style="margin-bottom: 0.5rem;">
                             <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -80,7 +80,7 @@
                             <span>@x.Email</span>
                         </a>
 
-                        <div class="sidebar-subheader">BAĞLANTILAR</div>
+                        <div class="sidebar-subheader">@Localizer["Links"].Value.ToUpper()</div>
                         <a href="https://github.com/erbahadiralp" class="social-link" target="_blank" style="margin-bottom: 0.5rem;">
                             <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -219,7 +219,7 @@
                 var container = document.createElement('div');
                 container.className = 'pdf-fancybox-container';
                 container.style.display = 'block';
-                container.innerHTML = '<div class="pdf-loading-msg">Yükleniyor…</div>';
+                container.innerHTML = '<div class="pdf-loading-msg">@Localizer["Loading"]</div>';
                 document.body.appendChild(container);
 
                 var pdfRendered = false;

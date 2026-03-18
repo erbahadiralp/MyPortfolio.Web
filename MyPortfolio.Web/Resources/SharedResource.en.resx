@@ -103,4 +103,13 @@
   <data name="ContactError" xml:space="preserve">
     <value>An error occurred while sending your message. Please try again.</value>
   </data>
+  <data name="Links" xml:space="preserve">
+    <value>Links</value>
+  </data>
+  <data name="ProfilePhoto" xml:space="preserve">
+    <value>Profile Photo</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
 </root> 
