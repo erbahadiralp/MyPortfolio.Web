@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyPortfolio.Web.Models.Entities.Project>
+@model IEnumerable<MyPortfolio.Web.Models.Entities.Project>
 @using Microsoft.Extensions.Localization
 @using MyPortfolio.Web
 @inject IStringLocalizer<SharedResource> Localizer
@@ -36,8 +36,11 @@
                 }
             </div>
             <div class="project-links">
-                <a href="#" class="project-link">@Localizer["Demo"]</a>
-                <a href="@project.Link" class="project-link secondary">@Localizer["GitHub"]</a>
+                @if (!string.IsNullOrEmpty(project.DemoUrl))
+                {
+                    <a href="@project.DemoUrl" target="_blank" class="project-link">@Localizer["Demo"]</a>
+                }
+                <a href="@project.Link" target="_blank" class="project-link secondary">@Localizer["GitHub"]</a>
             </div>
         </div>
     }

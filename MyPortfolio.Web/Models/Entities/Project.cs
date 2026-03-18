@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
@@ -44,4 +44,5 @@ public partial class Project
     public string? ImageUrl { get; set; }
 
     public string? Tools { get; set; }
+    public string? DemoUrl { get; set; }
 }

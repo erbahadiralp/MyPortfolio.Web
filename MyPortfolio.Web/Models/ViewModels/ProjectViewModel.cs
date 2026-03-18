@@ -29,6 +29,9 @@ namespace MyPortfolio.Web.Models.ViewModels
         [Display(Name = "Kullanılan Teknolojiler")]
         public string? Tools { get; set; }
 
+        [Display(Name = "Demo Linki")]
+        public string? DemoUrl { get; set; }
+
         // Mevcut görseli göstermek için
         public string? ExistingImageUrl { get; set; }
 

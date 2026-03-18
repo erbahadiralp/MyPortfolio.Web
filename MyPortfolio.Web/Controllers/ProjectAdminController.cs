@@ -57,6 +57,7 @@ namespace MyPortfolio.Web.Controllers
                     Description_en = viewModel.Description_en,
                     Link = viewModel.Link,
                     Tools = viewModel.Tools,
+                    DemoUrl = viewModel.DemoUrl,
                     ImageUrl = newFileName
                 };
 
@@ -84,6 +85,7 @@ namespace MyPortfolio.Web.Controllers
                 Description_en = project.Description_en,
                 Link = project.Link,
                 Tools = project.Tools,
+                DemoUrl = project.DemoUrl,
                 ExistingImageUrl = project.ImageUrl
             };
 
@@ -120,6 +122,7 @@ namespace MyPortfolio.Web.Controllers
             projectToUpdate.Description_en = viewModel.Description_en;
             projectToUpdate.Link = viewModel.Link;
             projectToUpdate.Tools = viewModel.Tools;
+            projectToUpdate.DemoUrl = viewModel.DemoUrl;
 
             if (viewModel.ImageFile != null)
             {
