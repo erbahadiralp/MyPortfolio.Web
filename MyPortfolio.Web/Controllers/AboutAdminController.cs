@@ -51,7 +51,8 @@ namespace MyPortfolio.Web.Controllers
                 Phone = about.Phone,
                 Email = about.Email,
                 ImageUrl = about.ImageUrl,
-                CvDocumentUrl = about.CvDocumentUrl
+                CvDocumentUrl = about.CvDocumentUrl,
+                CvOriginalFileName = about.CvOriginalFileName
             };
 
             return View(viewModel);
@@ -107,6 +108,7 @@ namespace MyPortfolio.Web.Controllers
                 viewModel.Email = about.Email;
                 viewModel.ImageUrl = about.ImageUrl;
                 viewModel.CvDocumentUrl = about.CvDocumentUrl;
+                viewModel.CvOriginalFileName = about.CvOriginalFileName;
             }
     
             TempData["ErrorMessage"] = "Şifre değiştirilemedi. Lütfen hataları kontrol edip tekrar deneyin.";

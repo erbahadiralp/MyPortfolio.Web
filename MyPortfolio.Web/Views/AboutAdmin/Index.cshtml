@@ -100,7 +100,7 @@
                     <div class="card-body">
                         @if (!string.IsNullOrEmpty(Model.CvDocumentUrl))
                         {
-                            <a href="@Url.Content(Model.CvDocumentUrl)" target="_blank" class="btn btn-info btn-block mb-3">Mevcut CV'yi Görüntüle</a>
+                            <a href="@Url.Content(Model.CvDocumentUrl)" target="_blank" download="@Model.CvOriginalFileName" class="btn btn-info btn-block mb-3">Mevcut CV'yi Görüntüle / İndir</a>
                         }
                         else
                         {

@@ -44,6 +44,8 @@ namespace MyPortfolio.Web.Models.ViewModels
         // This will hold the path of the existing CV
         public string? CvDocumentUrl { get; set; }
 
+        public string? CvOriginalFileName { get; set; }
+
         // This will be used to upload a new image
         [Display(Name = "Profil Resmi Dosyası")]
         public IFormFile? ImageUrlFile { get; set; }

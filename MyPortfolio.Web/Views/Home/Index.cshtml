@@ -97,7 +97,7 @@
                         </a>
                     </div>
                     <div class="download-cv">
-                        <a href="@Url.Content("~" + x.CvDocumentUrl)" download class="download-button">
+                        <a href="@Url.Content("~" + x.CvDocumentUrl)" download="@x.CvOriginalFileName" class="download-button">
                             <span style="font-size: 1.2em; font-weight: 300; margin-right: 4px;">&darr;</span>
                             <span>@Localizer["DownloadCV"]</span>
                         </a>
