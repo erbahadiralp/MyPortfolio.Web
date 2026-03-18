@@ -21,7 +21,8 @@
         <div asp-validation-summary="All" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="ImageUrl" />
-        <input type="hidden" asp-for="CvDocumentUrl" />
+        <input type="hidden" asp-for="CvDocumentUrl_tr" />
+        <input type="hidden" asp-for="CvDocumentUrl_en" />
 
         <div class="row">
             <div class="col-md-9">
@@ -95,20 +96,39 @@
                 </div>
                 <div class="card card-secondary mb-3">
                     <div class="card-header">
-                        <h3 class="card-title">CV Belgesi</h3>
+                        <h3 class="card-title">CV Belgesi (TR)</h3>
                     </div>
                     <div class="card-body">
-                        @if (!string.IsNullOrEmpty(Model.CvDocumentUrl))
+                        @if (!string.IsNullOrEmpty(Model.CvDocumentUrl_tr))
                         {
-                            <a href="@Url.Content(Model.CvDocumentUrl)" target="_blank" download="@Model.CvOriginalFileName" class="btn btn-info btn-block mb-3">Mevcut CV'yi Görüntüle / İndir</a>
+                            <a href="@Url.Content(Model.CvDocumentUrl_tr)" target="_blank" download="@Model.CvOriginalFileName_tr" class="btn btn-info btn-block mb-3">Mevcut TR CV'yi Görüntüle</a>
                         }
                         else
                         {
-                            <span class="d-block text-center mb-3">Henüz bir CV yüklenmemiş.</span>
+                            <span class="d-block text-center mb-3">Henüz bir TR CV yüklenmemiş.</span>
                         }
-                        <label asp-for="CvDocumentUrlFile">CV'yi Değiştir (.pdf)</label>
-                        <input asp-for="CvDocumentUrlFile" class="form-control-file" accept=".pdf" />
-                        <span asp-validation-for="CvDocumentUrlFile" class="text-danger"></span>
+                        <label asp-for="CvDocumentUrlFile_tr">CV'yi Değiştir (.pdf)</label>
+                        <input asp-for="CvDocumentUrlFile_tr" class="form-control-file" accept=".pdf" />
+                        <span asp-validation-for="CvDocumentUrlFile_tr" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="card card-secondary mb-3">
+                    <div class="card-header">
+                        <h3 class="card-title">CV Belgesi (EN)</h3>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(Model.CvDocumentUrl_en))
+                        {
+                            <a href="@Url.Content(Model.CvDocumentUrl_en)" target="_blank" download="@Model.CvOriginalFileName_en" class="btn btn-info btn-block mb-3">Mevcut EN CV'yi Görüntüle</a>
+                        }
+                        else
+                        {
+                            <span class="d-block text-center mb-3">Henüz bir EN CV yüklenmemiş.</span>
+                        }
+                        <label asp-for="CvDocumentUrlFile_en">CV'yi Değiştir (.pdf)</label>
+                        <input asp-for="CvDocumentUrlFile_en" class="form-control-file" accept=".pdf" />
+                        <span asp-validation-for="CvDocumentUrlFile_en" class="text-danger"></span>
                     </div>
                 </div>
 

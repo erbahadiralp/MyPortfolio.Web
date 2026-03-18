@@ -51,8 +51,10 @@ namespace MyPortfolio.Web.Controllers
                 Phone = about.Phone,
                 Email = about.Email,
                 ImageUrl = about.ImageUrl,
-                CvDocumentUrl = about.CvDocumentUrl,
-                CvOriginalFileName = about.CvOriginalFileName
+                CvDocumentUrl_tr = about.CvDocumentUrl_tr,
+                CvOriginalFileName_tr = about.CvOriginalFileName_tr,
+                CvDocumentUrl_en = about.CvDocumentUrl_en,
+                CvOriginalFileName_en = about.CvOriginalFileName_en
             };
 
             return View(viewModel);
@@ -107,8 +109,10 @@ namespace MyPortfolio.Web.Controllers
                 viewModel.Phone = about.Phone;
                 viewModel.Email = about.Email;
                 viewModel.ImageUrl = about.ImageUrl;
-                viewModel.CvDocumentUrl = about.CvDocumentUrl;
-                viewModel.CvOriginalFileName = about.CvOriginalFileName;
+                viewModel.CvDocumentUrl_tr = about.CvDocumentUrl_tr;
+                viewModel.CvOriginalFileName_tr = about.CvOriginalFileName_tr;
+                viewModel.CvDocumentUrl_en = about.CvDocumentUrl_en;
+                viewModel.CvOriginalFileName_en = about.CvOriginalFileName_en;
             }
     
             TempData["ErrorMessage"] = "Şifre değiştirilemedi. Lütfen hataları kontrol edip tekrar deneyin.";
@@ -164,10 +168,15 @@ namespace MyPortfolio.Web.Controllers
             {
                 aboutEntity.ImageUrl = await SaveFile(viewModel.ImageUrlFile, aboutEntity.ImageUrl, "profile");
             }
-            if (viewModel.CvDocumentUrlFile != null)
+            if (viewModel.CvDocumentUrlFile_tr != null)
             {
-                aboutEntity.CvOriginalFileName = viewModel.CvDocumentUrlFile.FileName;
-                aboutEntity.CvDocumentUrl = await SaveFile(viewModel.CvDocumentUrlFile, aboutEntity.CvDocumentUrl, "cv");
+                aboutEntity.CvOriginalFileName_tr = viewModel.CvDocumentUrlFile_tr.FileName;
+                aboutEntity.CvDocumentUrl_tr = await SaveFile(viewModel.CvDocumentUrlFile_tr, aboutEntity.CvDocumentUrl_tr, "cv-tr");
+            }
+            if (viewModel.CvDocumentUrlFile_en != null)
+            {
+                aboutEntity.CvOriginalFileName_en = viewModel.CvDocumentUrlFile_en.FileName;
+                aboutEntity.CvDocumentUrl_en = await SaveFile(viewModel.CvDocumentUrlFile_en, aboutEntity.CvDocumentUrl_en, "cv-en");
             }
 
             await _context.SaveChangesAsync();

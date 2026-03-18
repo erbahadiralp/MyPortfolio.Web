@@ -39,8 +39,13 @@ public partial class MyPortfolioDbContext : IdentityDbContext<Admin>
             entity.Ignore(e => e.ShortDescription);
 
             entity.Property(e => e.Address).HasMaxLength(250);
-            entity.Property(e => e.CvDocumentUrl).HasColumnName("CvDocumentURL");
-            entity.Property(e => e.CvOriginalFileName).HasMaxLength(255);
+            entity.Ignore(e => e.CvDocumentUrl);
+            entity.Ignore(e => e.CvOriginalFileName);
+
+            entity.Property(e => e.CvDocumentUrl_tr).HasColumnName("CvDocumentURL_tr");
+            entity.Property(e => e.CvOriginalFileName_tr).HasMaxLength(255);
+            entity.Property(e => e.CvDocumentUrl_en).HasColumnName("CvDocumentURL_en");
+            entity.Property(e => e.CvOriginalFileName_en).HasMaxLength(255);
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.FirstName).HasMaxLength(50);
             entity.Property(e => e.ImageUrl).HasColumnName("ImageURL");

@@ -42,17 +42,22 @@ namespace MyPortfolio.Web.Models.ViewModels
         public string? ImageUrl { get; set; }
 
         // This will hold the path of the existing CV
-        public string? CvDocumentUrl { get; set; }
+        public string? CvDocumentUrl_tr { get; set; }
+        public string? CvOriginalFileName_tr { get; set; }
 
-        public string? CvOriginalFileName { get; set; }
+        public string? CvDocumentUrl_en { get; set; }
+        public string? CvOriginalFileName_en { get; set; }
 
         // This will be used to upload a new image
         [Display(Name = "Profil Resmi Dosyası")]
         public IFormFile? ImageUrlFile { get; set; }
 
         // This will be used to upload a new CV
-        [Display(Name = "CV Belgesi Dosyası")]
-        public IFormFile? CvDocumentUrlFile { get; set; }
+        [Display(Name = "CV Belgesi (TR)")]
+        public IFormFile? CvDocumentUrlFile_tr { get; set; }
+
+        [Display(Name = "CV Belgesi (EN)")]
+        public IFormFile? CvDocumentUrlFile_en { get; set; }
 
         public PasswordChangeViewModel PasswordChange { get; set; } = new PasswordChangeViewModel();
     }

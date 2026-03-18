@@ -51,6 +51,32 @@ public partial class About
         }
     }
 
-    public string? CvDocumentUrl { get; set; }
-    public string? CvOriginalFileName { get; set; }
+    public string? CvDocumentUrl_tr { get; set; }
+    public string? CvDocumentUrl_en { get; set; }
+    public string? CvOriginalFileName_tr { get; set; }
+    public string? CvOriginalFileName_en { get; set; }
+
+    [NotMapped]
+    public string? CvDocumentUrl
+    {
+        get
+        {
+            var culture = CultureInfo.CurrentUICulture.Name.ToLower();
+            if (culture.StartsWith("tr"))
+                return CvDocumentUrl_tr;
+            return CvDocumentUrl_en;
+        }
+    }
+
+    [NotMapped]
+    public string? CvOriginalFileName
+    {
+        get
+        {
+            var culture = CultureInfo.CurrentUICulture.Name.ToLower();
+            if (culture.StartsWith("tr"))
+                return CvOriginalFileName_tr;
+            return CvOriginalFileName_en;
+        }
+    }
 }
