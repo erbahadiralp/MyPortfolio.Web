@@ -45,10 +45,39 @@
                         <button type="submit" class="lang-btn @(currentCulture.StartsWith("en") ? "active-lang" : "")">EN</button>
                     </form>
                 </div>
+                <button class="hamburger-btn" id="hamburger-btn" aria-label="Menüyü aç">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 </nav>
+
+<!-- Mobile Navigation -->
+<div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+<div class="mobile-nav" id="mobile-nav">
+    <div class="mobile-nav-close">
+        <button id="mobile-nav-close-btn" aria-label="Menüyü kapat">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+    <div class="mobile-nav-links">
+        <a href="#ana-sayfa" class="mobile-nav-link">@Localizer["Home"]</a>
+        <a href="#egitim" class="mobile-nav-link">@Localizer["Education"]</a>
+        <a href="#deneyim" class="mobile-nav-link">@Localizer["Experience"]</a>
+        <a href="#projeler" class="mobile-nav-link">@Localizer["Projects"]</a>
+        <a href="#sertifikalar" class="mobile-nav-link">@Localizer["Certificates"]</a>
+        <a href="#yetenekler" class="mobile-nav-link">@Localizer["Skills"]</a>
+        <a href="#iletisim" class="mobile-nav-link">@Localizer["Contact"]</a>
+    </div>
+</div>
 <div class="main-container">
     <div class="content-wrapper">
         <div class="sidebar">

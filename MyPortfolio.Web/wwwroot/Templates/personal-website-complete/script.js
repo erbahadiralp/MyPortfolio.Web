@@ -34,8 +34,45 @@ document.addEventListener("DOMContentLoaded", () => {
   if (themeToggleButton) {
     themeToggleButton.addEventListener('click', toggleTheme);
   }
-  
-  // Smooth scrolling, form submission, and other listeners can go here...
+
+  // ===== Mobile Navigation =====
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+  const mobileNavCloseBtn = document.getElementById('mobile-nav-close-btn');
+
+  function openMobileNav() {
+    if (mobileNav && mobileNavOverlay) {
+      mobileNav.classList.add('active');
+      mobileNavOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeMobileNav() {
+    if (mobileNav && mobileNavOverlay) {
+      mobileNav.classList.remove('active');
+      mobileNavOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', openMobileNav);
+  }
+  if (mobileNavCloseBtn) {
+    mobileNavCloseBtn.addEventListener('click', closeMobileNav);
+  }
+  if (mobileNavOverlay) {
+    mobileNavOverlay.addEventListener('click', closeMobileNav);
+  }
+
+  // Close mobile nav when a link is clicked
+  document.querySelectorAll('.mobile-nav-links a').forEach((link) => {
+    link.addEventListener('click', function(e) {
+      closeMobileNav();
+    });
+  });
   
   // Smooth scrolling for navigation links
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {

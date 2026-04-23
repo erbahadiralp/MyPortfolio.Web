@@ -1,67 +1,77 @@
 # MyPortfolio.Web
 
-ASP.NET Core MVC ve Docker kullanılarak geliştirilmiş kişisel portfolyo web sitesidir. İçerik (Hakkımda, Deneyimler, Eğitim, Yetenekler vb.) admin paneli üzerinden yönetilir.
+ASP.NET Core MVC ile geliştirilmiş kişisel portfolyo sitesi. İçerikler (hakkımda, deneyim, eğitim, projeler, sertifikalar, yetenekler) admin panelinden yönetiliyor.
 
 ## Teknolojiler
 
 - ASP.NET Core 8 MVC
-- Microsoft SQL Server
+- PostgreSQL 15
+- Entity Framework Core
+- ASP.NET Core Identity
+- Nginx (reverse proxy)
 - Docker & Docker Compose
 
-## Projeyi Çalıştırma
+## Kurulum
 
-### 1. Docker ile (Önerilen)
+### Docker ile
 
-Docker ve Docker Compose kurulu olmalıdır.
-
-**Geliştirme Ortamı:**
 ```bash
-docker-compose up -d
-```
+cd MyPortfolio.Web
 
-**Production Ortamı:**
-```bash
-# 1. Ortam dosyasını kopyala
+# ortam dosyasını oluştur
 cp production.env.example production.env
 
-# 2. Dosyayı aç ve DB_PASSWORD değerini ayarla
+# production.env içini doldur:
+#   DB_PASSWORD       -> veritabanı şifresi
+#   ADMIN_PASSWORD    -> admin panel şifresi (min 8 karakter, büyük harf + rakam)
+#   TURNSTILE_SECRET_KEY -> cloudflare turnstile key
 
-# 3. Projeyi başlat
-docker-compose -f docker-compose.prod.yml --env-file production.env up --build -d
+# ayağa kaldır
+docker compose up --build -d
 ```
 
-### 2. Manuel Kurulum (Docker'sız)
+### Docker'sız
 
-**Gerekenler:**
-- .NET 8 SDK
-- Microsoft SQL Server
-- Entity Framework CLI (`dotnet-ef`)
+.NET 8 SDK ve PostgreSQL kurulu olmalı.
 
-**Kurulum Adımları:**
-1. `appsettings.Development.json` içindeki `ConnectionStrings.DefaultConnection` değerini kendi SQL Server adresine göre düzenle.
+```bash
+# bağlantı bilgisi (environment variable veya appsettings)
+ConnectionStrings__DefaultConnection=Host=localhost;Database=MyPortfolioDb;Username=postgres;Password=sifre
 
-2. Entity Framework migration'larını uygula:
-   ```bash
-   # Gerekliyse EF aracını kur:
-   dotnet tool install --global dotnet-ef
-   
-   # Veritabanını oluştur/güncelle:
-   dotnet ef database update
-   ```
+# ef tool yoksa kur
+dotnet tool install --global dotnet-ef
 
-3. Projeyi çalıştır:
-   ```bash
-   dotnet run
-   ```
+# migration uygula
+dotnet ef database update
 
-## Uygulamaya Erişim
+# çalıştır
+dotnet run
+```
 
-**Ana Sayfa:**
-- Docker: `http://localhost`
-- Manuel: `http://localhost:5242` (veya terminalde belirtilen port)
+## Erişim
 
-**Admin Paneli:**
-- Docker: `http://localhost/Account/Login`
-- Manuel: `http://localhost:5242/Account/Login`
+| | Docker | Manuel |
+|---|---|---|
+| Site | `http://localhost` | `http://localhost:5280` |
+| Admin | `http://localhost/Account/Login` | `http://localhost:5280/Account/Login` |
 
-*Not: Admin giriş bilgileri `DbSeeder.cs` içinde tanımlıdır.*
+Admin girişi: kullanıcı adı `admin`, şifre `ADMIN_PASSWORD` env variable'ındaki değer. Varsayılan `Admin2024!`.
+
+## Yapı
+
+```
+MyPortfolio.Web/
+├── Controllers/
+├── Models/
+├── Views/
+│   ├── Home/            # ana sayfa + partial'lar
+│   ├── Shared/          # layout
+│   └── *Admin/          # admin paneli
+├── ViewComponents/
+├── Resources/           # tr-TR, en-US dil dosyaları
+├── wwwroot/             # css, js, görseller
+├── Migrations/
+├── docker-compose.yml
+├── Dockerfile
+└── nginx.conf
+```
